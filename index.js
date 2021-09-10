@@ -34,8 +34,8 @@ client.simplePrice({ids: tickers.map(ticker => coins[ticker].coingecko).join(","
             const rate = rates[coin.coingecko].usd * discrepancy_denominator;
 
             new_prices[ticker] = {
-                multiplier: rate,
-                decimals: Math.floor(coin.decimals + fraction_digits)
+                multiplier: Math.round(rate),
+                decimals: coin.decimals + fraction_digits
             };
         });
 
@@ -56,7 +56,7 @@ client.simplePrice({ids: tickers.map(ticker => coins[ticker].coingecko).join(","
                         prices_to_update.push({
                             asset_id: ticker,
                             price: {
-                                multiplier: Math.floor(new_prices[ticker].multiplier).toString(),
+                                multiplier: Math.round(new_prices[ticker].multiplier).toString(),
                                 decimals: new_prices[ticker].decimals
                             }
                         })
