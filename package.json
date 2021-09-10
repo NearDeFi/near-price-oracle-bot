@@ -1,0 +1,25 @@
+{
+  "name": "near-oracle-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "bn.js": "^5.2.0",
+    "coingecko-api-v3": "0.0.12",
+    "near-api-js": "^0.42.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zavodil/near-oracle-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zavodil/near-oracle-bot/issues"
+  },
+  "homepage": "https://github.com/zavodil/near-oracle-bot#readme"
+}
