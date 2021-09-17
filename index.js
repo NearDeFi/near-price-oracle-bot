@@ -1,84 +1,50 @@
-const {CoinGeckoClient} = require('coingecko-api-v3');
 const near = require('./near');
-const {IsDifferentEnough} = require('./functions');
-
-const contract = process.env.CONTRACT_ID || "dev-1631302633591-50236902542063";
-const account_id = process.env.NEAR_ACCOUNT_ID || 'zavodil.testnet';
-
-const client = new CoinGeckoClient({
-    timeout: 10000,
-    autoRetry: true,
-});
+const config = require('./config');
+const bot = require('./bot');
+const coingecko = require('./feeds/coingecko');
+const binance = require('./feeds/binance');
+const binanceFutures = require('./feeds/binance-futures');
+const {GetMedianPrice} = require("./functions");
 
 console.log("Welcome to the Oracle Bot")
 
 let coins = {
-    "wrap.testnet": {coingecko: "near", decimals: 24},
-    "neth.ft-fin.testnet": {coingecko: "ethereum", decimals: 18},
-    "nusdt.ft-fin.testnet": {coingecko: "tether", decimals: 6},
-    "nusdc.ft-fin.testnet": {coingecko: "usd-coin", decimals: 6},
-    "ndai.ft-fin.testnet": {coingecko: "dai", decimals: 18}
+    "wrap.testnet": {decimals: 24, coingecko: "near", binance: "NEARUSDT"},
+    "neth.ft-fin.testnet": {decimals: 18, coingecko: "ethereum", binance: "ETHUSDT"},
+    "nusdt.ft-fin.testnet": {decimals: 6, coingecko: "tether"},
+    "nusdc.ft-fin.testnet": {decimals: 6, coingecko: "usd-coin"},
+    "ndai.ft-fin.testnet": {decimals: 18, coingecko: "dai"}
 };
 
-const tickers = Object.keys(coins);
+const fraction_digits = 4;
 
-// coingecko
-const fraction_digits = 2;
-client.simplePrice({ids: tickers.map(ticker => coins[ticker].coingecko).join(","), vs_currencies: "usd"})
-    .then((rates) => {
-        let new_prices = {};
+Promise.all([
+        binance.getPrices(coins),
+        coingecko.getPrices(coins),
+        binanceFutures.getPrices(coins)
+    ]
+).then(values => {
+    const tickers = Object.keys(coins)
+    let new_prices = tickers.reduce((object, ticker) => {
+        let price = GetMedianPrice(values, ticker);
+        const discrepancy_denominator = Math.pow(10, fraction_digits);
 
-        tickers.map(ticker => {
-            const coin = coins[ticker];
-            const discrepancy_denominator = Math.pow(10, fraction_digits);
-            const rate = rates[coin.coingecko].usd * discrepancy_denominator;
+        object[ticker] = {
+            multiplier: Math.round(price * discrepancy_denominator),
+            decimals: coins[ticker].decimals + fraction_digits
+        };
+        return object;
+    }, {});
 
-            new_prices[ticker] = {
-                multiplier: Math.round(rate),
-                decimals: coin.decimals + fraction_digits
-            };
-        });
-
-        near.NearView(contract, "get_price_data", {asset_ids: tickers})
-            .then(response => response.prices)
-            .then(old_prices => old_prices.reduce((obj, item) => Object.assign(obj, {
-                [item.asset_id]:
-                    item.price
-                        ? {multiplier: item.price.multiplier, decimals: item.price.decimals}
-                        : {multiplier: 0, decimals: 0}
-            }), {}))
-            .then(old_prices => {
-                let prices_to_update = [];
-                tickers.map(ticker => {
-                    console.log(`Compare ${ticker}: ${old_prices[ticker].multiplier.toString()} and ${new_prices[ticker].multiplier.toString()}`);
-                    if (IsDifferentEnough(old_prices[ticker], new_prices[ticker])) {
-                        console.log(`!!! Update ${ticker} price`)
-                        prices_to_update.push({
-                            asset_id: ticker,
-                            price: {
-                                multiplier: Math.round(new_prices[ticker].multiplier).toString(),
-                                decimals: new_prices[ticker].decimals
-                            }
-                        })
-                    }
-                });
-
-                if (prices_to_update.length) {
-                    near.NearCall(account_id, contract, "report_prices", {prices: prices_to_update})
-                        .then(resp => console.log(resp));
-                }
-            })
-    });
-
-
-/*
-console.log(IsDifferentEnough(
-    {
-        multiplier: new BN(200),
-        denominator: new BN(100),
-    },
-    {
-        multiplier: new BN(0),
-        denominator: new BN(100),
-    }));
- */
+    near.NearView(config.CONTRACT_ID, "get_price_data", {asset_ids: tickers})
+        .then(response => response.prices)
+        .then(old_prices => old_prices.reduce((obj, item) => Object.assign(obj, {
+            [item.asset_id]:
+                item.price
+                    ? {multiplier: item.price.multiplier, decimals: item.price.decimals}
+                    : {multiplier: 0, decimals: 0}
+        }), {}))
+        .then(old_prices => {
+            bot.updatePrices(tickers, old_prices, new_prices);
+        })
+});

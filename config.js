@@ -1,6 +1,9 @@
 const CONTRACT_NAME = process.env.CONTRACT_NAME || "null_address.testnet";
 
 module.exports = {
+    CONTRACT_ID: process.env.CONTRACT_ID || "dev-1631302633591-50236902542063",
+    NEAR_ACCOUNT_ID: process.env.NEAR_ACCOUNT_ID || 'zavodil.testnet',
+
     API_SERVER_URL: "https://rest.nearapi.org",
     MAINNET_RPC: "https://rpc.mainnet.near.org",
     getConfig: (env) => {
