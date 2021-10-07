@@ -4,7 +4,6 @@ const {IsDifferentEnough} = require("./functions");
 
 module.exports = {
     updatePrices: function(tickers, old_prices, new_prices) {
-
         let prices_to_update = [];
         tickers.map(ticker => {
             console.log(`Compare ${ticker}: ${old_prices[ticker].multiplier.toString()} and ${new_prices[ticker].multiplier.toString()}`);

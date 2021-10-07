@@ -4,16 +4,17 @@ const bot = require('./bot');
 const coingecko = require('./feeds/coingecko');
 const binance = require('./feeds/binance');
 const binanceFutures = require('./feeds/binance-futures');
+const huobi = require('./feeds/huobi');
 const {GetMedianPrice} = require("./functions");
 
 console.log("Welcome to the Oracle Bot")
 
 let coins = {
-    "wrap.testnet": {decimals: 24, coingecko: "near", binance: "NEARUSDT"},
-    "neth.ft-fin.testnet": {decimals: 18, coingecko: "ethereum", binance: "ETHUSDT"},
-    "nusdt.ft-fin.testnet": {decimals: 6, coingecko: "tether"},
-    "nusdc.ft-fin.testnet": {decimals: 6, coingecko: "usd-coin"},
-    "ndai.ft-fin.testnet": {decimals: 18, coingecko: "dai"}
+    "wrap.testnet": {decimals: 24, coingecko: "near", binance: "NEARUSDT", huobi: "nearusdt"},
+    "weth.fakes.testnet": {decimals: 18, coingecko: "ethereum", binance: "ETHUSDT", huobi: "ethusdt"},
+    "usdt.fakes.testnet": {decimals: 6, coingecko: "tether"},
+    "usdc.fakes.testnet": {decimals: 6, coingecko: "usd-coin", huobi: "usdcusdt"},
+    "dai.fakes.testnet": {decimals: 18, coingecko: "dai", huobi: "daiusdt"}
 };
 
 const fraction_digits = 4;
@@ -21,7 +22,8 @@ const fraction_digits = 4;
 Promise.all([
         binance.getPrices(coins),
         coingecko.getPrices(coins),
-        binanceFutures.getPrices(coins)
+        binanceFutures.getPrices(coins),
+        huobi.getPrices(coins)
     ]
 ).then(values => {
     const tickers = Object.keys(coins)
