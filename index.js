@@ -31,8 +31,6 @@ let coins = {
   "dai.fakes.testnet": { decimals: 18, coingecko: "dai", huobi: "daiusdt" },
 };
 
-const fraction_digits = 4;
-
 async function main() {
   const values = await Promise.all([
     binance.getPrices(coins),
@@ -43,11 +41,11 @@ async function main() {
   const tickers = Object.keys(coins);
   const new_prices = tickers.reduce((object, ticker) => {
     let price = GetMedianPrice(values, ticker);
-    const discrepancy_denominator = Math.pow(10, fraction_digits);
+    const discrepancy_denominator = Math.pow(10, config.FRACTION_DIGITS);
 
     object[ticker] = {
       multiplier: Math.round(price * discrepancy_denominator),
-      decimals: coins[ticker].decimals + fraction_digits,
+      decimals: coins[ticker].decimals + config.FRACTION_DIGITS,
     };
     return object;
   }, {});

@@ -1,3 +1,5 @@
+const config = require("./config");
+
 module.exports = {
   /**
    * @return {boolean}
@@ -15,7 +17,10 @@ module.exports = {
         ? Math.pow(10, max_decimals - price_new.decimals)
         : 1);
 
-    return Math.abs(new_multiplier - old_multiplier) >= old_multiplier * 0.001; // 0.1%+ diff
+    return (
+      Math.abs(new_multiplier - old_multiplier) >=
+      old_multiplier * config.RELATIVE_DIFF
+    );
   },
 
   /**

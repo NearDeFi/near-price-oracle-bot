@@ -3,8 +3,18 @@ const CONTRACT_NAME = process.env.CONTRACT_NAME || "null_address.testnet";
 module.exports = {
   CONTRACT_ID: process.env.CONTRACT_ID || "priceoracle.testnet",
   NEAR_ACCOUNT_ID: process.env.NEAR_ACCOUNT_ID || "zavodil.testnet",
-  // 50 seconds
-  MAX_NO_REPORT_DURATION: process.env.MAX_NO_REPORT_DURATION || 50000,
+  // Will report the prices at least every 50 seconds
+  MAX_NO_REPORT_DURATION: process.env.MAX_NO_REPORT_DURATION
+    ? parseFloat(process.env.MAX_NO_REPORT_DURATION)
+    : 50000,
+  // Relative difference. Default 0.005 or 0.5%
+  RELATIVE_DIFF: process.env.RELATIVE_DIFF
+    ? parseFloat(process.env.RELATIVE_DIFF)
+    : 0.005,
+  // Each price is reported with 4 digits after floating point.
+  FRACTION_DIGITS: process.env.FRACTION_DIGITS
+    ? parseInt(process.env.FRACTION_DIGITS)
+    : 4,
 
   API_SERVER_URL: "https://rest.nearapi.org",
   MAINNET_RPC: "https://rpc.mainnet.near.org",
