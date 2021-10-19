@@ -1,7 +1,7 @@
 const CONTRACT_NAME = process.env.CONTRACT_NAME || "null_address.testnet";
 
 module.exports = {
-  CONTRACT_ID: process.env.CONTRACT_ID || "dev-1631302633591-50236902542063",
+  CONTRACT_ID: process.env.CONTRACT_ID || "priceoracle.testnet",
   NEAR_ACCOUNT_ID: process.env.NEAR_ACCOUNT_ID || "zavodil.testnet",
   // 50 seconds
   MAX_NO_REPORT_DURATION: process.env.MAX_NO_REPORT_DURATION || 50000,
