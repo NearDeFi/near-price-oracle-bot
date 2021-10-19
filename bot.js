@@ -13,25 +13,22 @@ module.exports = {
       time_from_last_report > config.MAX_NO_REPORT_DURATION;
     const prices_to_update = [];
     tickers.map((ticker) => {
+      const old_price = old_prices[ticker];
+      const new_price = new_prices[ticker];
       console.log(
-        `Compare ${ticker}: ${old_prices[
-          ticker
-        ].multiplier.toString()} and ${new_prices[
-          ticker
-        ].multiplier.toString()}`
+        `Compare ${ticker}: ${old_price.multiplier.toString()} and ${new_price.multiplier.toString()}`
       );
-      if (
-        time_to_report ||
-        IsDifferentEnough(old_prices[ticker], new_prices[ticker])
-      ) {
+      if (time_to_report || IsDifferentEnough(old_price, new_price)) {
         console.log(`!!! Update ${ticker} price`);
-        prices_to_update.push({
-          asset_id: ticker,
-          price: {
-            multiplier: Math.round(new_prices[ticker].multiplier).toString(),
-            decimals: new_prices[ticker].decimals,
-          },
-        });
+        if (new_price.multiplier > 0) {
+          prices_to_update.push({
+            asset_id: ticker,
+            price: {
+              multiplier: Math.round(new_price.multiplier).toString(),
+              decimals: new_price.decimals,
+            },
+          });
+        }
       }
     });
 
