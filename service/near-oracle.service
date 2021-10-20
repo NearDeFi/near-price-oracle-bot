@@ -1,0 +1,9 @@
+[Unit]
+Description=Near Oracle Price Updater service
+
+[Service]
+User=root
+ExecStart=/var/www/html/nearspace.info/apps/near-price-oracle-bot/run.sh
+
+[Install]
+WantedBy=default.target
