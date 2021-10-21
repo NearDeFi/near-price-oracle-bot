@@ -6,7 +6,7 @@ const { getConfig } = require("./config");
 
 const nearConfig = getConfig(process.env.NODE_ENV || "development");
 const CREDENTIALS_DIR = ".near-credentials/testnet/";
-const GAS = "20000000000000";
+const GAS = "50000000000000";
 
 module.exports = {
   NearView: async function (contract, operation, parameters) {
