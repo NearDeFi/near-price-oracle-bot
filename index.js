@@ -9,7 +9,7 @@ const { GetMedianPrice } = require("./functions");
 
 console.log("Welcome to the Oracle Bot");
 
-let coins = {
+const TestnetCoins = {
   "wrap.testnet": {
     decimals: 24,
     coingecko: "near",
@@ -30,6 +30,38 @@ let coins = {
   },
   "dai.fakes.testnet": { decimals: 18, coingecko: "dai", huobi: "daiusdt" },
 };
+
+const MainnetCoins = {
+  "wrap.near": {
+    decimals: 24,
+    coingecko: "near",
+    binance: "NEARUSDT",
+    huobi: "nearusdt",
+  },
+  "c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.factory.bridge.near": {
+    decimals: 18,
+    coingecko: "ethereum",
+    binance: "ETHUSDT",
+    huobi: "ethusdt",
+  },
+  "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near": {
+    decimals: 6,
+    coingecko: "tether",
+  },
+  "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near": {
+    decimals: 6,
+    coingecko: "usd-coin",
+    huobi: "usdcusdt",
+  },
+  "6b175474e89094c44da98b954eedeac495271d0f.factory.bridge.near": {
+    decimals: 18,
+    coingecko: "dai",
+    huobi: "daiusdt",
+  },
+};
+
+const coins =
+  near.nearConfig.networkId === "mainnet" ? MainnetCoins : TestnetCoins;
 
 async function main() {
   const values = await Promise.all([

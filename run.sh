@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-export NODE_ENV=testnet
+export NODE_ENV=mainnet
 # TODO: Add your account ID
-# export NEAR_ACCOUNT_ID=abc.testnet
-export CONTRACT_ID=priceoracle.testnet
+# export NEAR_ACCOUNT_ID=abc.near
+export CONTRACT_ID=priceoracle.near
 
 cd $(dirname "$0")
 mkdir -p logs
