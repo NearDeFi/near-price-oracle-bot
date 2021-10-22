@@ -9,6 +9,8 @@ const { GetMedianPrice } = require("./functions");
 
 console.log("Welcome to the Oracle Bot");
 
+const nearConfig = config.getConfig(process.env.NODE_ENV || "development");
+
 const TestnetCoins = {
   "wrap.testnet": {
     decimals: 24,
@@ -60,8 +62,7 @@ const MainnetCoins = {
   },
 };
 
-const coins =
-  near.nearConfig.networkId === "mainnet" ? MainnetCoins : TestnetCoins;
+const coins = nearConfig.networkId === "mainnet" ? MainnetCoins : TestnetCoins;
 
 async function main() {
   const values = await Promise.all([

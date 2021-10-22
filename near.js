@@ -4,7 +4,7 @@ const path = require("path");
 const nearApi = require("near-api-js");
 const { getConfig } = require("./config");
 
-export const nearConfig = getConfig(process.env.NODE_ENV || "development");
+const nearConfig = getConfig(process.env.NODE_ENV || "development");
 const CREDENTIALS_DIR =
   nearConfig.networkId === "mainnet"
     ? ".near-credentials/mainnet/"
