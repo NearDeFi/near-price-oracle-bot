@@ -15,6 +15,10 @@ module.exports = {
   FRACTION_DIGITS: process.env.FRACTION_DIGITS
     ? parseInt(process.env.FRACTION_DIGITS)
     : 4,
+  // Time out is milliseconds when the process is killed.
+  REPORT_TIMEOUT: process.env.REPORT_TIMEOUT
+    ? parseInt(process.env.REPORT_TIMEOUT)
+    : 15000,
 
   API_SERVER_URL: "https://rest.nearapi.org",
   MAINNET_RPC: "https://rpc.mainnet.near.org",

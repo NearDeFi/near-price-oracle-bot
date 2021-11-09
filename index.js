@@ -107,4 +107,10 @@ async function main() {
   await bot.updatePrices(tickers, old_prices, new_prices, last_report);
 }
 
-main();
+setTimeout(() => {
+  process.exit(1);
+}, config.REPORT_TIMEOUT);
+
+main().then(() => {
+  process.exit(0);
+});
