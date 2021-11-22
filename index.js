@@ -24,6 +24,12 @@ const TestnetCoins = {
     binance: "ETHUSDT",
     huobi: "ethusdt",
   },
+  aurora: {
+    decimals: 18,
+    coingecko: "ethereum",
+    binance: "ETHUSDT",
+    huobi: "ethusdt",
+  },
   "usdt.fakes.testnet": { decimals: 6, coingecko: "tether" },
   "usdc.fakes.testnet": {
     decimals: 6,
@@ -39,6 +45,12 @@ const MainnetCoins = {
     coingecko: "near",
     binance: "NEARUSDT",
     huobi: "nearusdt",
+  },
+  aurora: {
+    decimals: 18,
+    coingecko: "ethereum",
+    binance: "ETHUSDT",
+    huobi: "ethusdt",
   },
   "c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.factory.bridge.near": {
     decimals: 18,
