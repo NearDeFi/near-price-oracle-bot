@@ -95,15 +95,15 @@ async function main() {
     return object;
   }, {});
 
-  const [raw_oracle_price_data, raw_oracle] = await Promise.all([
-    near.NearView(config.CONTRACT_ID, "get_oracle_price_data", {
+  const raw_oracle_price_data = await near.NearView(
+    config.CONTRACT_ID,
+    "get_oracle_price_data",
+    {
       account_id: config.NEAR_ACCOUNT_ID,
       asset_ids: tickers,
-    }),
-    near.NearView(config.CONTRACT_ID, "get_oracle", {
-      account_id: config.NEAR_ACCOUNT_ID,
-    }),
-  ]);
+      recency_duration_sec: Math.floor(config.MAX_NO_REPORT_DURATION / 1000),
+    }
+  );
 
   const old_prices = raw_oracle_price_data.prices.reduce(
     (obj, item) =>
@@ -114,9 +114,8 @@ async function main() {
       }),
     {}
   );
-  const last_report = parseFloat(raw_oracle.last_report) / 1e6;
 
-  await bot.updatePrices(tickers, old_prices, new_prices, last_report);
+  await bot.updatePrices(tickers, old_prices, new_prices);
 }
 
 setTimeout(() => {

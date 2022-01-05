@@ -3,14 +3,8 @@ const config = require("./config");
 const { IsDifferentEnough } = require("./functions");
 
 module.exports = {
-  updatePrices: async function (tickers, old_prices, new_prices, last_report) {
+  updatePrices: async function (tickers, old_prices, new_prices) {
     const current_time = new Date().getTime();
-    const time_from_last_report = current_time - last_report;
-    console.log(
-      `Time from last report: ${(time_from_last_report / 1e3).toFixed(3)} sec`
-    );
-    const time_to_report =
-      time_from_last_report > config.MAX_NO_REPORT_DURATION;
     const prices_to_update = [];
     tickers.map((ticker) => {
       const old_price = old_prices[ticker];
@@ -18,17 +12,15 @@ module.exports = {
       console.log(
         `Compare ${ticker}: ${old_price.multiplier.toString()} and ${new_price.multiplier.toString()}`
       );
-      if (time_to_report || IsDifferentEnough(old_price, new_price)) {
+      if (IsDifferentEnough(old_price, new_price) && new_price.multiplier > 0) {
         console.log(`!!! Update ${ticker} price`);
-        if (new_price.multiplier > 0) {
-          prices_to_update.push({
-            asset_id: ticker,
-            price: {
-              multiplier: Math.round(new_price.multiplier).toString(),
-              decimals: new_price.decimals,
-            },
-          });
-        }
+        prices_to_update.push({
+          asset_id: ticker,
+          price: {
+            multiplier: Math.round(new_price.multiplier).toString(),
+            decimals: new_price.decimals,
+          },
+        });
       }
     });
 
