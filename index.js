@@ -90,7 +90,7 @@ const MainnetComputeCoins = {
         const stNearMultiplier =
           parseFloat(rawStNearState.st_near_price) / 1e24;
         return {
-          multiplier: Math.round(dependencyPrice.price * stNearMultiplier),
+          multiplier: Math.round(dependencyPrice.multiplier * stNearMultiplier),
           decimals: dependencyPrice.decimals,
         };
       } catch (e) {
@@ -128,9 +128,9 @@ async function main() {
   await Promise.all(
     Object.entries(computeCoins).map(
       ([key, { dependencyCoin, computeCall }]) => {
-        return async () => {
+        return (async () => {
           new_prices[key] = await computeCall(new_prices[dependencyCoin]);
-        };
+        })();
       }
     )
   );
