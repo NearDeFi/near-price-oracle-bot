@@ -74,7 +74,38 @@ const MainnetCoins = {
   },
 };
 
-const coins = nearConfig.networkId === "mainnet" ? MainnetCoins : TestnetCoins;
+const MainnetComputeCoins = {
+  "meta-pool.near": {
+    dependencyCoin: "wrap.near",
+    computeCall: async (dependencyPrice) => {
+      if (!dependencyPrice) {
+        return null;
+      }
+      try {
+        const rawStNearState = await near.NearView(
+          "meta-pool.near",
+          "get_contract_state",
+          {}
+        );
+        const stNearMultiplier =
+          parseFloat(rawStNearState.st_near_price) / 1e24;
+        return {
+          multiplier: Math.round(dependencyPrice.multiplier * stNearMultiplier),
+          decimals: dependencyPrice.decimals,
+        };
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
+    },
+  },
+};
+
+const TestnetComputeCoins = {};
+
+const mainnet = nearConfig.networkId === "mainnet";
+const coins = mainnet ? MainnetCoins : TestnetCoins;
+const computeCoins = mainnet ? MainnetComputeCoins : TestnetComputeCoins;
 
 async function main() {
   const values = await Promise.all([
@@ -83,8 +114,7 @@ async function main() {
     binanceFutures.getPrices(coins),
     huobi.getPrices(coins),
   ]);
-  const tickers = Object.keys(coins);
-  const new_prices = tickers.reduce((object, ticker) => {
+  const new_prices = Object.keys(coins).reduce((object, ticker) => {
     let price = GetMedianPrice(values, ticker);
     const discrepancy_denominator = Math.pow(10, config.FRACTION_DIGITS);
 
@@ -94,6 +124,18 @@ async function main() {
     };
     return object;
   }, {});
+
+  await Promise.all(
+    Object.entries(computeCoins).map(
+      ([key, { dependencyCoin, computeCall }]) => {
+        return (async () => {
+          new_prices[key] = await computeCall(new_prices[dependencyCoin]);
+        })();
+      }
+    )
+  );
+
+  const tickers = Object.keys(coins).concat(Object.keys(computeCoins));
 
   const raw_oracle_price_data = await near.NearView(
     config.CONTRACT_ID,
