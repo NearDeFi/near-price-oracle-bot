@@ -37,6 +37,7 @@ const TestnetCoins = {
     huobi: "usdcusdt",
   },
   "dai.fakes.testnet": { decimals: 18, coingecko: "dai", huobi: "daiusdt" },
+  "nearbusd": { decimals: 24, binance: "NEARBUSD" },
 };
 
 const MainnetCoins = {
@@ -72,6 +73,7 @@ const MainnetCoins = {
     coingecko: "dai",
     huobi: "daiusdt",
   },
+  "nearbusd": { decimals: 24, binance: "NEARBUSD" },
 };
 
 const MainnetComputeCoins = {
