@@ -46,7 +46,7 @@ const TestnetCoins = {
   },
   "wbtc.fakes.near": {
     decimals: 8,
-    coingecko: "wbtc",
+    coingecko: "wrapped-bitcoin",
     binance: "BTCUSDT",
     huobi: "btcusdt",
     ftx: "BTC/USD",
@@ -87,7 +87,7 @@ const MainnetCoins = {
   },
   "2260fac5e5542a773aa44fbcfedf7c193bc2c599.factory.bridge.near": {
     decimals: 8,
-    coingecko: "wbtc",
+    coingecko: "wrapped-bitcoin",
     binance: "BTCUSDT",
     huobi: "btcusdt",
     ftx: "BTC/USD",
