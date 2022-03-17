@@ -24,13 +24,13 @@ const TestnetCoins = {
     coingecko: "ethereum",
     binance: "ETHUSDT",
     huobi: "ethusdt",
-    ftx: "ETH/USD"
+    ftx: "ETH/USD",
   },
   "usdt.fakes.testnet": {
     decimals: 6,
     stablecoin: true,
     coingecko: "tether",
-    ftx: "USDT/USD"
+    ftx: "USDT/USD",
   },
   "usdc.fakes.testnet": {
     decimals: 6,
@@ -42,7 +42,14 @@ const TestnetCoins = {
     stablecoin: true,
     coingecko: "dai",
     huobi: "daiusdt",
-    ftx: "DAI/USD"
+    ftx: "DAI/USD",
+  },
+  "wbtc.fakes.near": {
+    decimals: 8,
+    coingecko: "wbtc",
+    binance: "BTCUSDT",
+    huobi: "btcusdt",
+    ftx: "BTC/USD",
   },
 };
 
@@ -58,13 +65,13 @@ const MainnetCoins = {
     coingecko: "ethereum",
     binance: "ETHUSDT",
     huobi: "ethusdt",
-    ftx: "ETH/USD"
+    ftx: "ETH/USD",
   },
   "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near": {
     decimals: 6,
     stablecoin: true,
     coingecko: "tether",
-    ftx: "USDT/USD"
+    ftx: "USDT/USD",
   },
   "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near": {
     decimals: 6,
@@ -83,7 +90,7 @@ const MainnetCoins = {
     coingecko: "wbtc",
     binance: "BTCUSDT",
     huobi: "btcusdt",
-    ftx: "BTC/USD"
+    ftx: "BTC/USD",
   },
 };
 
