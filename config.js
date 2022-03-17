@@ -20,8 +20,6 @@ module.exports = {
     ? parseInt(process.env.REPORT_TIMEOUT)
     : 15000,
 
-  API_SERVER_URL: "https://rest.nearapi.org",
-  MAINNET_RPC: "https://rpc.mainnet.near.org",
   getConfig: (env) => {
     switch (env) {
       case "production":

@@ -5,6 +5,7 @@ const coingecko = require("./feeds/coingecko");
 const binance = require("./feeds/binance");
 const binanceFutures = require("./feeds/binance-futures");
 const huobi = require("./feeds/huobi");
+const ftx = require("./feeds/ftx");
 const { GetMedianPrice } = require("./functions");
 
 console.log("Welcome to the Oracle Bot");
@@ -23,14 +24,26 @@ const TestnetCoins = {
     coingecko: "ethereum",
     binance: "ETHUSDT",
     huobi: "ethusdt",
+    ftx: "ETH/USD"
   },
-  "usdt.fakes.testnet": { decimals: 6, coingecko: "tether", stablecoin: true },
+  "usdt.fakes.testnet": {
+    decimals: 6,
+    stablecoin: true,
+    coingecko: "tether",
+    ftx: "USDT/USD"
+  },
   "usdc.fakes.testnet": {
     decimals: 6,
-    coingecko: "usd-coin",
     stablecoin: true,
+    coingecko: "usd-coin",
   },
-  "dai.fakes.testnet": { decimals: 18, coingecko: "dai", stablecoin: true },
+  "dai.fakes.testnet": {
+    decimals: 18,
+    stablecoin: true,
+    coingecko: "dai",
+    huobi: "daiusdt",
+    ftx: "DAI/USD"
+  },
 };
 
 const MainnetCoins = {
@@ -45,27 +58,32 @@ const MainnetCoins = {
     coingecko: "ethereum",
     binance: "ETHUSDT",
     huobi: "ethusdt",
+    ftx: "ETH/USD"
   },
   "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near": {
     decimals: 6,
-    coingecko: "tether",
     stablecoin: true,
+    coingecko: "tether",
+    ftx: "USDT/USD"
   },
   "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near": {
     decimals: 6,
-    coingecko: "usd-coin",
     stablecoin: true,
+    coingecko: "usd-coin",
   },
   "6b175474e89094c44da98b954eedeac495271d0f.factory.bridge.near": {
     decimals: 18,
-    coingecko: "dai",
     stablecoin: true,
+    coingecko: "dai",
+    huobi: "daiusdt",
+    ftx: "DAI/USD",
   },
   "2260fac5e5542a773aa44fbcfedf7c193bc2c599.factory.bridge.near": {
     decimals: 8,
     coingecko: "wbtc",
     binance: "BTCUSDT",
     huobi: "btcusdt",
+    ftx: "BTC/USD"
   },
 };
 
@@ -117,7 +135,9 @@ async function main() {
     coingecko.getPrices(coins),
     binanceFutures.getPrices(coins),
     huobi.getPrices(coins),
+    ftx.getPrices(coins),
   ]);
+
   const new_prices = Object.keys(coins).reduce((object, ticker) => {
     let price = GetMedianPrice(values, ticker);
     const discrepancy_denominator = Math.pow(10, config.FRACTION_DIGITS);
