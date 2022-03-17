@@ -18,12 +18,6 @@ const TestnetCoins = {
     binance: "NEARUSDT",
     huobi: "nearusdt",
   },
-  "weth.fakes.testnet": {
-    decimals: 18,
-    coingecko: "ethereum",
-    binance: "ETHUSDT",
-    huobi: "ethusdt",
-  },
   aurora: {
     decimals: 18,
     coingecko: "ethereum",
@@ -34,6 +28,7 @@ const TestnetCoins = {
   "usdc.fakes.testnet": {
     decimals: 6,
     coingecko: "usd-coin",
+    binance: "USDCUSDT",
     huobi: "usdcusdt",
   },
   "dai.fakes.testnet": { decimals: 18, coingecko: "dai", huobi: "daiusdt" },
@@ -52,12 +47,6 @@ const MainnetCoins = {
     binance: "ETHUSDT",
     huobi: "ethusdt",
   },
-  "c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.factory.bridge.near": {
-    decimals: 18,
-    coingecko: "ethereum",
-    binance: "ETHUSDT",
-    huobi: "ethusdt",
-  },
   "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near": {
     decimals: 6,
     coingecko: "tether",
@@ -65,6 +54,7 @@ const MainnetCoins = {
   "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near": {
     decimals: 6,
     coingecko: "usd-coin",
+    binance: "USDCUSDT",
     huobi: "usdcusdt",
   },
   "6b175474e89094c44da98b954eedeac495271d0f.factory.bridge.near": {
@@ -72,9 +62,19 @@ const MainnetCoins = {
     coingecko: "dai",
     huobi: "daiusdt",
   },
+  "2260fac5e5542a773aa44fbcfedf7c193bc2c599.factory.bridge.near": {
+    decimals: 8,
+    coingecko: "wbtc",
+    binance: "BTCUSDT",
+    huobi: "btcusdt",
+  },
 };
 
 const MainnetComputeCoins = {
+  "c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.factory.bridge.near": {
+    dependencyCoin: "aurora",
+    computeCall: async (dependencyPrice) => dependencyPrice,
+  },
   "meta-pool.near": {
     dependencyCoin: "wrap.near",
     computeCall: async (dependencyPrice) => {
@@ -101,7 +101,12 @@ const MainnetComputeCoins = {
   },
 };
 
-const TestnetComputeCoins = {};
+const TestnetComputeCoins = {
+  "weth.fakes.testnet": {
+    dependencyCoin: "aurora",
+    computeCall: async (dependencyPrice) => dependencyPrice,
+  },
+};
 
 const mainnet = nearConfig.networkId === "mainnet";
 const coins = mainnet ? MainnetCoins : TestnetCoins;
