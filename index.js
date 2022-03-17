@@ -24,14 +24,13 @@ const TestnetCoins = {
     binance: "ETHUSDT",
     huobi: "ethusdt",
   },
-  "usdt.fakes.testnet": { decimals: 6, coingecko: "tether" },
+  "usdt.fakes.testnet": { decimals: 6, coingecko: "tether", stablecoin: true },
   "usdc.fakes.testnet": {
     decimals: 6,
     coingecko: "usd-coin",
-    binance: "USDCUSDT",
-    huobi: "usdcusdt",
+    stablecoin: true,
   },
-  "dai.fakes.testnet": { decimals: 18, coingecko: "dai", huobi: "daiusdt" },
+  "dai.fakes.testnet": { decimals: 18, coingecko: "dai", stablecoin: true },
 };
 
 const MainnetCoins = {
@@ -50,17 +49,17 @@ const MainnetCoins = {
   "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near": {
     decimals: 6,
     coingecko: "tether",
+    stablecoin: true,
   },
   "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near": {
     decimals: 6,
     coingecko: "usd-coin",
-    binance: "USDCUSDT",
-    huobi: "usdcusdt",
+    stablecoin: true,
   },
   "6b175474e89094c44da98b954eedeac495271d0f.factory.bridge.near": {
     decimals: 18,
     coingecko: "dai",
-    huobi: "daiusdt",
+    stablecoin: true,
   },
   "2260fac5e5542a773aa44fbcfedf7c193bc2c599.factory.bridge.near": {
     decimals: 8,
@@ -122,6 +121,11 @@ async function main() {
   const new_prices = Object.keys(coins).reduce((object, ticker) => {
     let price = GetMedianPrice(values, ticker);
     const discrepancy_denominator = Math.pow(10, config.FRACTION_DIGITS);
+
+    // Since stable coins rely only on coingecko price, to prevent further risks, we limit the range.
+    if (coins[ticker].stablecoin && price > 0) {
+      price = Math.max(0.95, Math.min(price, 1.05));
+    }
 
     object[ticker] = {
       multiplier: Math.round(price * discrepancy_denominator),
