@@ -5,6 +5,7 @@ const coingecko = require("./feeds/coingecko");
 const binance = require("./feeds/binance");
 const binanceFutures = require("./feeds/binance-futures");
 const huobi = require("./feeds/huobi");
+const ftx = require("./feeds/ftx");
 const { GetMedianPrice } = require("./functions");
 
 console.log("Welcome to the Oracle Bot");
@@ -18,25 +19,31 @@ const TestnetCoins = {
     binance: "NEARUSDT",
     huobi: "nearusdt",
   },
-  "weth.fakes.testnet": {
-    decimals: 18,
-    coingecko: "ethereum",
-    binance: "ETHUSDT",
-    huobi: "ethusdt",
-  },
   aurora: {
     decimals: 18,
     coingecko: "ethereum",
     binance: "ETHUSDT",
     huobi: "ethusdt",
+    ftx: "ETH/USD"
   },
-  "usdt.fakes.testnet": { decimals: 6, coingecko: "tether" },
+  "usdt.fakes.testnet": {
+    decimals: 6,
+    stablecoin: true,
+    coingecko: "tether",
+    ftx: "USDT/USD"
+  },
   "usdc.fakes.testnet": {
     decimals: 6,
+    stablecoin: true,
     coingecko: "usd-coin",
-    huobi: "usdcusdt",
   },
-  "dai.fakes.testnet": { decimals: 18, coingecko: "dai", huobi: "daiusdt" },
+  "dai.fakes.testnet": {
+    decimals: 18,
+    stablecoin: true,
+    coingecko: "dai",
+    huobi: "daiusdt",
+    ftx: "DAI/USD"
+  },
 };
 
 const MainnetCoins = {
@@ -51,30 +58,40 @@ const MainnetCoins = {
     coingecko: "ethereum",
     binance: "ETHUSDT",
     huobi: "ethusdt",
-  },
-  "c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.factory.bridge.near": {
-    decimals: 18,
-    coingecko: "ethereum",
-    binance: "ETHUSDT",
-    huobi: "ethusdt",
+    ftx: "ETH/USD"
   },
   "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near": {
     decimals: 6,
+    stablecoin: true,
     coingecko: "tether",
+    ftx: "USDT/USD"
   },
   "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near": {
     decimals: 6,
+    stablecoin: true,
     coingecko: "usd-coin",
-    huobi: "usdcusdt",
   },
   "6b175474e89094c44da98b954eedeac495271d0f.factory.bridge.near": {
     decimals: 18,
+    stablecoin: true,
     coingecko: "dai",
     huobi: "daiusdt",
+    ftx: "DAI/USD",
+  },
+  "2260fac5e5542a773aa44fbcfedf7c193bc2c599.factory.bridge.near": {
+    decimals: 8,
+    coingecko: "wbtc",
+    binance: "BTCUSDT",
+    huobi: "btcusdt",
+    ftx: "BTC/USD"
   },
 };
 
 const MainnetComputeCoins = {
+  "c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.factory.bridge.near": {
+    dependencyCoin: "aurora",
+    computeCall: async (dependencyPrice) => dependencyPrice,
+  },
   "meta-pool.near": {
     dependencyCoin: "wrap.near",
     computeCall: async (dependencyPrice) => {
@@ -101,7 +118,12 @@ const MainnetComputeCoins = {
   },
 };
 
-const TestnetComputeCoins = {};
+const TestnetComputeCoins = {
+  "weth.fakes.testnet": {
+    dependencyCoin: "aurora",
+    computeCall: async (dependencyPrice) => dependencyPrice,
+  },
+};
 
 const mainnet = nearConfig.networkId === "mainnet";
 const coins = mainnet ? MainnetCoins : TestnetCoins;
@@ -113,10 +135,17 @@ async function main() {
     coingecko.getPrices(coins),
     binanceFutures.getPrices(coins),
     huobi.getPrices(coins),
+    ftx.getPrices(coins),
   ]);
+
   const new_prices = Object.keys(coins).reduce((object, ticker) => {
     let price = GetMedianPrice(values, ticker);
     const discrepancy_denominator = Math.pow(10, config.FRACTION_DIGITS);
+
+    // Since stable coins rely only on coingecko price, to prevent further risks, we limit the range.
+    if (coins[ticker].stablecoin && price > 0) {
+      price = Math.max(0.95, Math.min(price, 1.05));
+    }
 
     object[ticker] = {
       multiplier: Math.round(price * discrepancy_denominator),
