@@ -123,6 +123,29 @@ const MainnetComputeCoins = {
       }
     },
   },
+  "linear-protocol.near": {
+    dependencyCoin: "wrap.near",
+    computeCall: async (dependencyPrice) => {
+      if (!dependencyPrice) {
+        return null;
+      }
+      try {
+        const rawLiNearPrice = await near.NearView(
+          "linear-protocol.near",
+          "ft_price",
+          {}
+        );
+        const liNearMultiplier = parseFloat(rawLiNearPrice) / 1e24;
+        return {
+          multiplier: Math.round(dependencyPrice.multiplier * liNearMultiplier),
+          decimals: dependencyPrice.decimals,
+        };
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
+    },
+  },
 };
 
 const TestnetComputeCoins = {
