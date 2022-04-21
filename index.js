@@ -1,6 +1,7 @@
 const near = require("./near");
 const config = require("./config");
 const bot = require("./bot");
+const Twap = require("./twap");
 const coingecko = require("./feeds/coingecko");
 const binance = require("./feeds/binance");
 const binanceFutures = require("./feeds/binance-futures");
@@ -130,6 +131,21 @@ const TestnetComputeCoins = {
     dependencyCoin: "aurora",
     computeCall: async (dependencyPrice) => dependencyPrice,
   },
+  "twrap.testnet": {
+    dependencyCoin: "wrap.testnet",
+    computeCall: (dependencyPrice) => {
+      const twap = new Twap();
+      try {
+        twap.loadTwapHistory("twap_history.json");
+      } catch (err) {
+        console.log(err);
+      }
+      twap.updatePrice("twrap.testnet", dependencyPrice);
+      twap.storeTwapHistory("twap_history.json");
+
+      return twap.getPrice("twrap.testnet");
+    }
+  }
 };
 
 const mainnet = nearConfig.networkId === "mainnet";
@@ -192,7 +208,7 @@ async function main() {
       }),
     {}
   );
-
+  
   await bot.updatePrices(tickers, old_prices, new_prices);
 }
 
