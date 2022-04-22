@@ -1,4 +1,5 @@
 const config = require("./config");
+const fs = require("fs");
 
 module.exports = {
   /**
@@ -41,5 +42,26 @@ module.exports = {
     if (values.length % 2) return values[half];
 
     return (values[half - 1] + values[half]) / 2.0;
+  },
+
+  LoadJson: function (filename, ignoreError = true) {
+    try {
+      let rawData = fs.readFileSync(filename);
+      return JSON.parse(rawData);
+    } catch (e) {
+      if (!ignoreError) {
+        console.error("Failed to load JSON:", filename, e);
+      }
+    }
+    return null;
+  },
+
+  SaveJson: function (json, filename) {
+    try {
+      const data = JSON.stringify(json);
+      fs.writeFileSync(filename, data);
+    } catch (e) {
+      console.error("Failed to save JSON:", filename, e);
+    }
   },
 };

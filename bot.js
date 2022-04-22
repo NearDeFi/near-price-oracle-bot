@@ -3,26 +3,40 @@ const config = require("./config");
 const { IsDifferentEnough } = require("./functions");
 
 module.exports = {
-  updatePrices: async function (tickers, old_prices, new_prices) {
+  updatePrices: async function (tickers, old_prices, new_prices, state) {
     const current_time = new Date().getTime();
-    const prices_to_update = [];
+    let prices_to_update = [];
+    const all_prices_updates = [];
     tickers.map((ticker) => {
       const old_price = old_prices[ticker];
       const new_price = new_prices[ticker];
       console.log(
         `Compare ${ticker}: ${old_price.multiplier.toString()} and ${new_price.multiplier.toString()}`
       );
-      if (IsDifferentEnough(old_price, new_price) && new_price.multiplier > 0) {
-        console.log(`!!! Update ${ticker} price`);
-        prices_to_update.push({
+      if (new_price.multiplier > 0) {
+        const price_update = {
           asset_id: ticker,
           price: {
             multiplier: Math.round(new_price.multiplier).toString(),
             decimals: new_price.decimals,
           },
-        });
+        };
+        all_prices_updates.push(price_update);
+        if (IsDifferentEnough(old_price, new_price)) {
+          console.log(`!!! Update ${ticker} price`);
+          prices_to_update.push(price_update);
+        }
       }
     });
+
+    if (
+      state.lastFullUpdateTimestamp + config.FULL_UPDATE_PERIOD <=
+      current_time
+    ) {
+      prices_to_update = all_prices_updates;
+      state.lastFullUpdateTimestamp = current_time;
+      console.log(`!!! Executing full price update`);
+    }
 
     if (prices_to_update.length) {
       const resp = await near.NearCall(

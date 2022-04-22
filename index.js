@@ -6,7 +6,7 @@ const binance = require("./feeds/binance");
 const binanceFutures = require("./feeds/binance-futures");
 const huobi = require("./feeds/huobi");
 const ftx = require("./feeds/ftx");
-const { GetMedianPrice } = require("./functions");
+const { GetMedianPrice, LoadJson, SaveJson } = require("./functions");
 
 console.log("Welcome to the Oracle Bot");
 
@@ -18,6 +18,7 @@ const TestnetCoins = {
     coingecko: "near",
     binance: "NEARUSDT",
     huobi: "nearusdt",
+    ftx: "NEAR/USD",
   },
   aurora: {
     decimals: 18,
@@ -59,6 +60,7 @@ const MainnetCoins = {
     coingecko: "near",
     binance: "NEARUSDT",
     huobi: "nearusdt",
+    ftx: "NEAR/USD",
   },
   aurora: {
     decimals: 18,
@@ -136,7 +138,16 @@ const mainnet = nearConfig.networkId === "mainnet";
 const coins = mainnet ? MainnetCoins : TestnetCoins;
 const computeCoins = mainnet ? MainnetComputeCoins : TestnetComputeCoins;
 
+const DefaultState = {
+  lastFullUpdateTimestamp: 0,
+};
+
 async function main() {
+  const state = Object.assign(
+    DefaultState,
+    LoadJson(config.STATE_FILENAME) || {}
+  );
+
   const values = await Promise.all([
     binance.getPrices(coins),
     coingecko.getPrices(coins),
@@ -193,7 +204,9 @@ async function main() {
     {}
   );
 
-  await bot.updatePrices(tickers, old_prices, new_prices);
+  await bot.updatePrices(tickers, old_prices, new_prices, state);
+
+  SaveJson(state, config.STATE_FILENAME);
 }
 
 setTimeout(() => {
