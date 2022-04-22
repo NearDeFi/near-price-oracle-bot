@@ -21,7 +21,7 @@ module.exports = {
     : 15000,
 
   // The filename to save bot state.
-  STATE_FILENAME: process.env.STATE_FILENAME || "./date/state.json",
+  STATE_FILENAME: process.env.STATE_FILENAME || "./data/state.json",
 
   // Time period in milliseconds to do full price refresh, helps save on gas.
   FULL_UPDATE_PERIOD: process.env.FULL_UPDATE_PERIOD
