@@ -126,7 +126,7 @@ const MainnetComputeCoins = {
       }
     },
   },
-  "twrap.near": {
+  "twap.wrap.near": {
     dependencyCoin: "wrap.near",
     computeCall: (dependencyPrice) => {
       const twap = new Twap();
@@ -135,10 +135,10 @@ const MainnetComputeCoins = {
       } catch (err) {
         console.log(err);
       }
-      twap.updatePrice("twrap.near", dependencyPrice);
+      twap.updatePrice("twap.wrap.near", dependencyPrice);
       twap.storeTwapHistory(TWAP_HISTORY_PATH);
 
-      return twap.getPrice("twrap.near");
+      return twap.getPrice("twap.wrap.near");
     }
   }
 };
@@ -148,7 +148,7 @@ const TestnetComputeCoins = {
     dependencyCoin: "aurora",
     computeCall: async (dependencyPrice) => dependencyPrice,
   },
-  "twrap.testnet": {
+  "twap.wrap.testnet": {
     dependencyCoin: "wrap.testnet",
     computeCall: (dependencyPrice) => {
       const twap = new Twap();
@@ -157,10 +157,10 @@ const TestnetComputeCoins = {
       } catch (err) {
         console.log(err);
       }
-      twap.updatePrice("twrap.testnet", dependencyPrice);
+      twap.updatePrice("twap.wrap.testnet", dependencyPrice);
       twap.storeTwapHistory(TWAP_HISTORY_PATH);
 
-      return twap.getPrice("twrap.testnet");
+      return twap.getPrice("twap.wrap.testnet");
     }
   }
 };
