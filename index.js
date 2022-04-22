@@ -9,6 +9,8 @@ const huobi = require("./feeds/huobi");
 const ftx = require("./feeds/ftx");
 const { GetMedianPrice } = require("./functions");
 
+const TWAP_HISTORY_PATH = "./twap_history.json";
+
 console.log("Welcome to the Oracle Bot");
 
 const nearConfig = config.getConfig(process.env.NODE_ENV || "development");
@@ -136,12 +138,12 @@ const TestnetComputeCoins = {
     computeCall: (dependencyPrice) => {
       const twap = new Twap();
       try {
-        twap.loadTwapHistory("twap_history.json");
+        twap.loadTwapHistory(TWAP_HISTORY_PATH);
       } catch (err) {
         console.log(err);
       }
       twap.updatePrice("twrap.testnet", dependencyPrice);
-      twap.storeTwapHistory("twap_history.json");
+      twap.storeTwapHistory(TWAP_HISTORY_PATH);
 
       return twap.getPrice("twrap.testnet");
     }
@@ -208,7 +210,7 @@ async function main() {
       }),
     {}
   );
-  
+
   await bot.updatePrices(tickers, old_prices, new_prices);
 }
 
