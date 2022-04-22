@@ -15,10 +15,18 @@ module.exports = {
   FRACTION_DIGITS: process.env.FRACTION_DIGITS
     ? parseInt(process.env.FRACTION_DIGITS)
     : 4,
-  // Time out is milliseconds when the process is killed.
+  // Time out in milliseconds when the process is killed.
   REPORT_TIMEOUT: process.env.REPORT_TIMEOUT
     ? parseInt(process.env.REPORT_TIMEOUT)
     : 15000,
+
+  // The filename to save bot state.
+  STATE_FILENAME: process.env.STATE_FILENAME || "./data/state.json",
+
+  // Time period in milliseconds to do full price refresh, helps save on gas.
+  FULL_UPDATE_PERIOD: process.env.FULL_UPDATE_PERIOD
+    ? parseInt(process.env.FULL_UPDATE_PERIOD)
+    : 600000,
 
   getConfig: (env) => {
     switch (env) {
