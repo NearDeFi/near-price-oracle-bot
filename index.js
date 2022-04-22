@@ -126,6 +126,21 @@ const MainnetComputeCoins = {
       }
     },
   },
+  "twrap.near": {
+    dependencyCoin: "wrap.near",
+    computeCall: (dependencyPrice) => {
+      const twap = new Twap();
+      try {
+        twap.loadTwapHistory(TWAP_HISTORY_PATH);
+      } catch (err) {
+        console.log(err);
+      }
+      twap.updatePrice("twrap.near", dependencyPrice);
+      twap.storeTwapHistory(TWAP_HISTORY_PATH);
+
+      return twap.getPrice("twrap.near");
+    }
+  }
 };
 
 const TestnetComputeCoins = {
