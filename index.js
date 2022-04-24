@@ -5,6 +5,7 @@ const coingecko = require("./feeds/coingecko");
 const binance = require("./feeds/binance");
 const binanceFutures = require("./feeds/binance-futures");
 const huobi = require("./feeds/huobi");
+const cryptocom = require("./feeds/crypto.com");
 const ftx = require("./feeds/ftx");
 const { GetMedianPrice, LoadJson, SaveJson } = require("./functions");
 
@@ -19,6 +20,7 @@ const TestnetCoins = {
     binance: "NEARUSDT",
     huobi: "nearusdt",
     ftx: "NEAR/USD",
+    cryptocom: "NEAR_USDT"
   },
   aurora: {
     decimals: 18,
@@ -26,17 +28,19 @@ const TestnetCoins = {
     binance: "ETHUSDT",
     huobi: "ethusdt",
     ftx: "ETH/USD",
+    cryptocom: "ETH_USDT"
   },
   "usdt.fakes.testnet": {
     decimals: 6,
     stablecoin: true,
     coingecko: "tether",
-    ftx: "USDT/USD",
+    ftx: "USDT/USD"
   },
   "usdc.fakes.testnet": {
     decimals: 6,
     stablecoin: true,
     coingecko: "usd-coin",
+    cryptocom: "USDC_USDT"
   },
   "dai.fakes.testnet": {
     decimals: 18,
@@ -44,6 +48,7 @@ const TestnetCoins = {
     coingecko: "dai",
     huobi: "daiusdt",
     ftx: "DAI/USD",
+    cryptocom: "DAI_USDT"
   },
   "wbtc.fakes.near": {
     decimals: 8,
@@ -51,6 +56,7 @@ const TestnetCoins = {
     binance: "BTCUSDT",
     huobi: "btcusdt",
     ftx: "BTC/USD",
+    cryptocom: "BTC_USDT"
   },
 };
 
@@ -61,6 +67,7 @@ const MainnetCoins = {
     binance: "NEARUSDT",
     huobi: "nearusdt",
     ftx: "NEAR/USD",
+    cryptocom: "NEAR_USDT"
   },
   aurora: {
     decimals: 18,
@@ -68,17 +75,19 @@ const MainnetCoins = {
     binance: "ETHUSDT",
     huobi: "ethusdt",
     ftx: "ETH/USD",
+    cryptocom: "ETH_USDT"
   },
   "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near": {
     decimals: 6,
     stablecoin: true,
     coingecko: "tether",
-    ftx: "USDT/USD",
+    ftx: "USDT/USD"
   },
   "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near": {
     decimals: 6,
     stablecoin: true,
     coingecko: "usd-coin",
+    cryptocom: "USDC_USDT"
   },
   "6b175474e89094c44da98b954eedeac495271d0f.factory.bridge.near": {
     decimals: 18,
@@ -86,6 +95,7 @@ const MainnetCoins = {
     coingecko: "dai",
     huobi: "daiusdt",
     ftx: "DAI/USD",
+    cryptocom: "DAI_USDT"
   },
   "2260fac5e5542a773aa44fbcfedf7c193bc2c599.factory.bridge.near": {
     decimals: 8,
@@ -93,7 +103,14 @@ const MainnetCoins = {
     binance: "BTCUSDT",
     huobi: "btcusdt",
     ftx: "BTC/USD",
+    cryptocom: "BTC_USDT"
   },
+  /*
+  "aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near": {
+    decimals: 18,
+    coingecko: "aurora-near",
+    cryptocom: "AURORA_USDT"
+  }*/
 };
 
 const MainnetComputeCoins = {
@@ -154,6 +171,7 @@ async function main() {
     binanceFutures.getPrices(coins),
     huobi.getPrices(coins),
     ftx.getPrices(coins),
+    cryptocom.getPrices(coins)
   ]);
 
   const new_prices = Object.keys(coins).reduce((object, ticker) => {

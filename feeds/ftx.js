@@ -19,5 +19,8 @@ module.exports = {
                     }
                 }, {})
             })
+            .catch(function(error) {
+                console.error(error)
+            })
     }
 }

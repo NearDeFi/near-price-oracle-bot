@@ -29,7 +29,7 @@ module.exports = {
    */
   GetMedianPrice: function (data, ticker) {
     let values = data.reduce((object, prices) => {
-      if (prices.hasOwnProperty(ticker)) object.push(prices[ticker]);
+      if (prices?.hasOwnProperty(ticker)) object.push(prices[ticker]);
       return object;
     }, []);
 

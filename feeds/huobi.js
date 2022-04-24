@@ -16,6 +16,9 @@ module.exports = {
                     object [tickers_prepared[ticker]] = parseFloat(price.tick.data[0].price)
                     return object;
                 }, {})
-        })
+            })
+            .catch(function (error) {
+                console.error(error)
+            })
     }
 }
