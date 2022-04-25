@@ -36,9 +36,9 @@ module.exports = {
     }, []);
 
     if (config.PRINT_DEBUG) {
-      const textPrices = " ".join(
-        values.map((price) => (price ? price.toFixed(4) : price))
-      );
+      const textPrices = values
+        .map((price) => (price ? price.toFixed(4) : price))
+        .join(" ");
       console.debug(`DEBUG: ${ticker} prices: ${textPrices}`);
     }
 
