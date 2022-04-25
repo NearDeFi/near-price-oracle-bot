@@ -28,6 +28,8 @@ module.exports = {
     ? parseInt(process.env.FULL_UPDATE_PERIOD)
     : 600000,
 
+  PRINT_DEBUG: !!process.env.PRINT_DEBUG,
+
   getConfig: (env) => {
     switch (env) {
       case "production":

@@ -50,7 +50,7 @@ const TestnetCoins = {
     ftx: "DAI/USD",
     cryptocom: "DAI_USDT",
   },
-  "wbtc.fakes.near": {
+  "wbtc.fakes.testnet": {
     decimals: 8,
     coingecko: "wrapped-bitcoin",
     binance: "BTCUSDT",
