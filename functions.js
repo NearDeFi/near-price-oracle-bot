@@ -29,9 +29,18 @@ module.exports = {
    */
   GetMedianPrice: function (data, ticker) {
     let values = data.reduce((object, prices) => {
-      if (prices?.hasOwnProperty(ticker)) object.push(prices[ticker]);
+      if (prices?.hasOwnProperty(ticker)) {
+        object.push(prices[ticker]);
+      }
       return object;
     }, []);
+
+    if (config.PRINT_DEBUG) {
+      const textPrices = values
+        .map((price) => (price ? price.toFixed(4) : price))
+        .join(" ");
+      console.debug(`DEBUG: ${ticker} prices: ${textPrices}`);
+    }
 
     if (!values.length) return 0;
 
