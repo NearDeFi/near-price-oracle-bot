@@ -154,6 +154,41 @@ const MainnetComputeCoins = {
       }
     },
   },
+  usn: {
+    dependencyCoin:
+      "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near",
+    computeCall: async (dependencyPrice) => {
+      if (!dependencyPrice) {
+        return null;
+      }
+      try {
+        const rawStablePool = await near.NearView(
+          "v2.ref-finance.near",
+          "get_stable_pool",
+          { pool_id: 3020 }
+        );
+        const relDiff =
+          parseFloat(rawStablePool.c_amounts[0]) /
+          parseFloat(rawStablePool.c_amounts[1]);
+        if (
+          relDiff < 0.99 ||
+          relDiff > 1.01 ||
+          parseFloat(rawStablePool.c_amounts[0]) <
+            config.MIN_USN_LIQUIDITY_IN_POOL
+        ) {
+          console.error("USN stable pool is unbalanced");
+          return null;
+        }
+        return {
+          multiplier: dependencyPrice.multiplier,
+          decimals: dependencyPrice.decimals + 12,
+        };
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
+    },
+  },
 };
 
 const TestnetComputeCoins = {
