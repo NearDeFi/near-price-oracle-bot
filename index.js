@@ -186,7 +186,7 @@ const TestnetComputeCoins = {
         }
         return {
           multiplier: dependencyPrice.multiplier,
-          decimals: dependencyPrice.decimals * 12,
+          decimals: dependencyPrice.decimals + 12,
         };
       } catch (e) {
         console.log(e);
