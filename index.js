@@ -161,6 +161,39 @@ const TestnetComputeCoins = {
     dependencyCoin: "aurora",
     computeCall: async (dependencyPrice) => dependencyPrice,
   },
+  "usdn.testnet": {
+    dependencyCoin: "usdt.fakes.testnet",
+    computeCall: async (dependencyPrice) => {
+      if (!dependencyPrice) {
+        return null;
+      }
+      try {
+        const rawStablePool = await near.NearView(
+          "ref-finance-101.testnet",
+          "get_stable_pool",
+          { pool_id: 356 }
+        );
+        const relDiff =
+          parseFloat(rawStablePool.c_amounts[0]) /
+          parseFloat(rawStablePool.c_amounts[1]);
+        if (
+          relDiff < 0.99 ||
+          relDiff > 1.01 ||
+          parseFloat(rawStablePool.c_amounts[0]) < 900000 * 1e18
+        ) {
+          console.error("USN stable pool is unbalanced");
+          return null;
+        }
+        return {
+          multiplier: dependencyPrice.multiplier,
+          decimals: dependencyPrice.decimals + 12,
+        };
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
+    },
+  },
 };
 
 const mainnet = nearConfig.networkId === "mainnet";
