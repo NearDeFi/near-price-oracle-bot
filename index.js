@@ -7,6 +7,7 @@ const binanceFutures = require("./feeds/binance-futures");
 const huobi = require("./feeds/huobi");
 const cryptocom = require("./feeds/crypto.com");
 const ftx = require("./feeds/ftx");
+const kucoin = require("./feeds/kucoin")
 const { GetMedianPrice, LoadJson, SaveJson } = require("./functions");
 
 console.log("Welcome to the Oracle Bot");
@@ -21,6 +22,7 @@ const TestnetCoins = {
     huobi: "nearusdt",
     ftx: "NEAR/USD",
     cryptocom: "NEAR_USDT",
+    kucoin: "NEAR-USDT",
   },
   aurora: {
     decimals: 18,
@@ -29,6 +31,7 @@ const TestnetCoins = {
     huobi: "ethusdt",
     ftx: "ETH/USD",
     cryptocom: "ETH_USDT",
+    kucoin: "ETH-USDT",
   },
   "usdt.fakes.testnet": {
     decimals: 6,
@@ -41,6 +44,7 @@ const TestnetCoins = {
     stablecoin: true,
     coingecko: "usd-coin",
     cryptocom: "USDC_USDT",
+    kucoin: "USDC-USDT",
   },
   "dai.fakes.testnet": {
     decimals: 18,
@@ -57,12 +61,14 @@ const TestnetCoins = {
     huobi: "btcusdt",
     ftx: "BTC/USD",
     cryptocom: "BTC_USDT",
+    kucoin: "BTC-USDT",
   },
   "aurora.fakes.testnet": {
     decimals: 18,
     coingecko: "aurora-near",
     cryptocom: "AURORA_USDT",
     huobi: "aurorausdt",
+    kucoin: "AURORA-USDT",
   },
 };
 
@@ -74,6 +80,7 @@ const MainnetCoins = {
     huobi: "nearusdt",
     ftx: "NEAR/USD",
     cryptocom: "NEAR_USDT",
+    kucoin: "NEAR-USDT",
   },
   aurora: {
     decimals: 18,
@@ -82,6 +89,7 @@ const MainnetCoins = {
     huobi: "ethusdt",
     ftx: "ETH/USD",
     cryptocom: "ETH_USDT",
+    kucoin: "ETH-USDT",
   },
   "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near": {
     decimals: 6,
@@ -94,6 +102,7 @@ const MainnetCoins = {
     stablecoin: true,
     coingecko: "usd-coin",
     cryptocom: "USDC_USDT",
+    kucoin: "USDC-USDT",
   },
   "6b175474e89094c44da98b954eedeac495271d0f.factory.bridge.near": {
     decimals: 18,
@@ -110,14 +119,17 @@ const MainnetCoins = {
     huobi: "btcusdt",
     ftx: "BTC/USD",
     cryptocom: "BTC_USDT",
+    kucoin: "BTC-USDT",
   },
   /*
   "aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near": {
     decimals: 18,
     coingecko: "aurora-near",
     cryptocom: "AURORA_USDT",
-    huobi: "aurorausdt"
-  }*/
+    huobi: "aurorausdt",
+    kucoin: "AURORA-USDT",
+  }
+   */
 };
 
 const MainnetComputeCoins = {
@@ -217,6 +229,7 @@ async function main() {
     huobi.getPrices(coins),
     ftx.getPrices(coins),
     cryptocom.getPrices(coins),
+    kucoin.getPrices(coins),
   ]);
 
   const new_prices = Object.keys(coins).reduce((object, ticker) => {
