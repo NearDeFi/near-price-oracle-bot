@@ -7,7 +7,8 @@ const binanceFutures = require("./feeds/binance-futures");
 const huobi = require("./feeds/huobi");
 const cryptocom = require("./feeds/crypto.com");
 const ftx = require("./feeds/ftx");
-const kucoin = require("./feeds/kucoin")
+const kucoin = require("./feeds/kucoin");
+const gate = require("./feeds/gate");
 const { GetMedianPrice, LoadJson, SaveJson } = require("./functions");
 
 console.log("Welcome to the Oracle Bot");
@@ -23,6 +24,7 @@ const TestnetCoins = {
     ftx: "NEAR/USD",
     cryptocom: "NEAR_USDT",
     kucoin: "NEAR-USDT",
+    gate: "near_usdt",
   },
   aurora: {
     decimals: 18,
@@ -32,12 +34,14 @@ const TestnetCoins = {
     ftx: "ETH/USD",
     cryptocom: "ETH_USDT",
     kucoin: "ETH-USDT",
+    gate: "eth_usdt",
   },
   "usdt.fakes.testnet": {
     decimals: 6,
     stablecoin: true,
     coingecko: "tether",
     ftx: "USDT/USD",
+    gate: "usdt_usd",
   },
   "usdc.fakes.testnet": {
     decimals: 6,
@@ -53,6 +57,7 @@ const TestnetCoins = {
     huobi: "daiusdt",
     ftx: "DAI/USD",
     cryptocom: "DAI_USDT",
+    gate: "dai_usdt",
   },
   "wbtc.fakes.testnet": {
     decimals: 8,
@@ -62,6 +67,7 @@ const TestnetCoins = {
     ftx: "BTC/USD",
     cryptocom: "BTC_USDT",
     kucoin: "BTC-USDT",
+    gate: "btc_usdt",
   },
   "aurora.fakes.testnet": {
     decimals: 18,
@@ -69,6 +75,7 @@ const TestnetCoins = {
     cryptocom: "AURORA_USDT",
     huobi: "aurorausdt",
     kucoin: "AURORA-USDT",
+    gate: "aurora_usdt",
   },
 };
 
@@ -81,6 +88,7 @@ const MainnetCoins = {
     ftx: "NEAR/USD",
     cryptocom: "NEAR_USDT",
     kucoin: "NEAR-USDT",
+    gate: "near_usdt",
   },
   aurora: {
     decimals: 18,
@@ -90,12 +98,14 @@ const MainnetCoins = {
     ftx: "ETH/USD",
     cryptocom: "ETH_USDT",
     kucoin: "ETH-USDT",
+    gate: "eth_usdt",
   },
   "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near": {
     decimals: 6,
     stablecoin: true,
     coingecko: "tether",
     ftx: "USDT/USD",
+    gate: "usdt_usd",
   },
   "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near": {
     decimals: 6,
@@ -111,6 +121,7 @@ const MainnetCoins = {
     huobi: "daiusdt",
     ftx: "DAI/USD",
     cryptocom: "DAI_USDT",
+    gate: "dai_usdt",
   },
   "2260fac5e5542a773aa44fbcfedf7c193bc2c599.factory.bridge.near": {
     decimals: 8,
@@ -120,6 +131,7 @@ const MainnetCoins = {
     ftx: "BTC/USD",
     cryptocom: "BTC_USDT",
     kucoin: "BTC-USDT",
+    gate: "btc_usdt",
   },
   /*
   "aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near": {
@@ -128,6 +140,7 @@ const MainnetCoins = {
     cryptocom: "AURORA_USDT",
     huobi: "aurorausdt",
     kucoin: "AURORA-USDT",
+    gate: "aurora_usdt",
   }
    */
 };
@@ -230,6 +243,7 @@ async function main() {
     ftx.getPrices(coins),
     cryptocom.getPrices(coins),
     kucoin.getPrices(coins),
+    gate.getPrices(coins),
   ]);
 
   const new_prices = Object.keys(coins).reduce((object, ticker) => {
