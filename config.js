@@ -30,6 +30,10 @@ module.exports = {
 
   PRINT_DEBUG: !!process.env.PRINT_DEBUG,
 
+  MIN_USN_LIQUIDITY_IN_POOL: process.env.MIN_USN_LIQUIDITY_IN_POOL
+    ? parseFloat(process.env.MIN_USN_LIQUIDITY_IN_POOL)
+    : 10_000_000 * 1e18,
+
   getConfig: (env) => {
     switch (env) {
       case "production":
