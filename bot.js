@@ -9,7 +9,7 @@ module.exports = {
     const all_prices_updates = [];
     tickers.map((ticker) => {
       const old_price = old_prices[ticker];
-      const new_price = new_prices[ticker];
+      const new_price = new_prices[ticker] || { multiplier: 0, decimals: 0 };
       console.log(
         `Compare ${ticker}: ${old_price.multiplier.toString()} and ${new_price.multiplier.toString()}`
       );
