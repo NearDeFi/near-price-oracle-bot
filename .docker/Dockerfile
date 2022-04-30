@@ -6,15 +6,14 @@ RUN chown node:node /oracle
 
 USER node
 WORKDIR /oracle
-RUN cd /oracle && git clone https://github.com/NearDeFi/near-price-oracle-bot.git . \
-    && npm install && npm ci --only=production
+RUN cd /oracle && git clone https://github.com/NearDeFi/near-price-oracle-bot.git . 
 COPY patch /oracle/patch
 RUN cd /oracle && patch -p1 < /oracle/patch
+RUN cd /oracle && npm install && npm ci --only=production
 
 VOLUME /home/node
 
 ENTRYPOINT [ "/oracle/run.sh" ]
 
-# docker build -t dockerreg.internal.aurora.dev/near-price-oracle:latest -f Dockerfile .
-# docker push dockerreg.internal.aurora.dev/near-price-oracle:latest
-# docker run --init -d --name near-price-oracle --rm -v /var/near/oracle:/home/node:rw dockerreg.internal.aurora.dev/near-price-oracle:latest
+# docker build -t local/near-price-oracle:latest -f Dockerfile .
+# docker run --init -d --name near-price-oracle --rm -v /var/near/oracle:/home/node:rw local/near-price-oracle:latest
