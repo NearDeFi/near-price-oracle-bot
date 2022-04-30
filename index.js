@@ -196,8 +196,8 @@ const MainnetComputeCoins = {
           parseFloat(rawStablePool.c_amounts[0]) /
           parseFloat(rawStablePool.c_amounts[1]);
         if (
-          relDiff < 0.99 ||
-          relDiff > 1.01 ||
+          relDiff < 0.95 ||
+          relDiff > 1.05 ||
           parseFloat(rawStablePool.c_amounts[0]) <
             config.MIN_USN_LIQUIDITY_IN_POOL
         ) {
@@ -237,8 +237,8 @@ const TestnetComputeCoins = {
           parseFloat(rawStablePool.c_amounts[0]) /
           parseFloat(rawStablePool.c_amounts[1]);
         if (
-          relDiff < 0.99 ||
-          relDiff > 1.01 ||
+          relDiff < 0.95 ||
+          relDiff > 1.05 ||
           parseFloat(rawStablePool.c_amounts[0]) < 900000 * 1e18
         ) {
           console.error("USN stable pool is unbalanced");
