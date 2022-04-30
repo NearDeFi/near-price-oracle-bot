@@ -201,10 +201,10 @@ const TestnetComputeCoins = {
         const relDiff =
           parseFloat(rawStablePool.c_amounts[0]) /
           parseFloat(rawStablePool.c_amounts[1]);
-        if (
+        if ( false /*
           relDiff < 0.99 ||
           relDiff > 1.01 ||
-          parseFloat(rawStablePool.c_amounts[0]) < 900000 * 1e18
+          parseFloat(rawStablePool.c_amounts[0]) < 900000 * 1e18 */
         ) {
           console.error("USN stable pool is unbalanced");
           return null;
