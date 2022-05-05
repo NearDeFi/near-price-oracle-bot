@@ -133,7 +133,6 @@ const MainnetCoins = {
     kucoin: "BTC-USDT",
     gate: "btc_usdt",
   },
-  /*
   "aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near": {
     decimals: 18,
     coingecko: "aurora-near",
@@ -141,8 +140,7 @@ const MainnetCoins = {
     huobi: "aurorausdt",
     kucoin: "AURORA-USDT",
     gate: "aurora_usdt",
-  }
-   */
+  },
 };
 
 const MainnetComputeCoins = {
