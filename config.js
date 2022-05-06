@@ -45,6 +45,7 @@ module.exports = {
           walletUrl: "https://wallet.near.org",
           helperUrl: "https://helper.mainnet.near.org",
           explorerUrl: "https://explorer.mainnet.near.org",
+          refContractName: "v2.ref-finance.near",
         };
       case "development":
       case "testnet":
@@ -55,6 +56,7 @@ module.exports = {
           walletUrl: "https://wallet.testnet.near.org",
           helperUrl: "https://helper.testnet.near.org",
           explorerUrl: "https://explorer.testnet.near.org",
+          refContractName: "ref-finance-101.testnet",
         };
       case "betanet":
         return {
