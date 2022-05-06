@@ -6,7 +6,8 @@
   "dependencies": {
     "binance-api-node": "^0.11.13",
     "coingecko-api-v3": "0.0.12",
-    "near-api-js": "^0.42.0"
+    "near-api-js": "^0.42.0",
+    "big.js": "^6.1.1"
   },
   "scripts": {
     "test": "jest func.test.js --useStderr --verbose false"
