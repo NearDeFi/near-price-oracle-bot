@@ -5,7 +5,7 @@ module.exports = {
   /**
    * @return {boolean}
    */
-  IsDifferentEnough: function (price_old, price_new) {
+  IsDifferentEnough: function (relativeDiff, price_old, price_new) {
     const max_decimals = Math.max(price_new.decimals, price_old.decimals);
     const old_multiplier =
       price_old.multiplier *
@@ -19,9 +19,30 @@ module.exports = {
         : 1);
 
     return (
-      Math.abs(new_multiplier - old_multiplier) >=
-      old_multiplier * config.RELATIVE_DIFF
+      Math.abs(new_multiplier - old_multiplier) >= old_multiplier * relativeDiff
     );
+  },
+
+  /**
+   * @return {number}
+   */
+  GetAvgPrice: function (bid, ask, last){
+    bid = parseFloat(bid);
+    ask = parseFloat(ask);
+    last = parseFloat(last);
+
+    if (!(bid * ask) || bid > ask || ask < bid) {
+      return 0;
+    }
+
+    if (last <= bid) {
+      return bid;
+    }
+    if (last >= ask) {
+      return ask;
+    }
+
+    return last;
   },
 
   /**

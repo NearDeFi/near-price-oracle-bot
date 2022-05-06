@@ -78,6 +78,7 @@ const TestnetCoins = {
     huobi: "aurorausdt",
     kucoin: "AURORA-USDT",
     gate: "aurora_usdt",
+    relativeDiff: 0.01, // 1%
   },
 };
 
@@ -135,7 +136,6 @@ const MainnetCoins = {
     kucoin: "BTC-USDT",
     gate: "btc_usdt",
   },
-  /*
   "aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near": {
     decimals: 18,
     coingecko: "aurora-near",
@@ -143,8 +143,8 @@ const MainnetCoins = {
     huobi: "aurorausdt",
     kucoin: "AURORA-USDT",
     gate: "aurora_usdt",
-  }
-   */
+    relativeDiff: 0.01, // 1%
+  },
 };
 
 const computeUsn = (usnTokenId, usdtTokenId, stablePoolId) => {
@@ -285,6 +285,13 @@ async function main() {
   // console.log(JSON.stringify(new_prices, null, 2));
 
   const tickers = Object.keys(coins).concat(Object.keys(computeCoins));
+  const relativeDiffs = tickers.reduce((agg, ticker) => {
+    agg[ticker] =
+      coins[ticker]?.relativeDiff ||
+      computeCoins[ticker]?.relativeDiff ||
+      config.RELATIVE_DIFF;
+    return agg;
+  }, {});
 
   const raw_oracle_price_data = await near.NearView(
     config.CONTRACT_ID,
@@ -306,7 +313,7 @@ async function main() {
     {}
   );
 
-  await bot.updatePrices(tickers, old_prices, new_prices, state);
+  await bot.updatePrices(relativeDiffs, old_prices, new_prices, state);
 
   SaveJson(state, config.STATE_FILENAME);
 }
