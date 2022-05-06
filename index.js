@@ -313,17 +313,13 @@ async function main() {
   );
 
   const tickers = Object.keys(coins).concat(Object.keys(computeCoins));
-  const relativeDiffs = tickers.reduce(
-    agg,
-    (ticker) => {
-      agg[ticker] =
-        coins[ticker]?.relativeDiff ||
-        computeCoins[ticker]?.relativeDiff ||
-        config.RELATIVE_DIFF;
-      return agg;
-    },
-    {}
-  );
+  const relativeDiffs = tickers.reduce((agg, ticker) => {
+    agg[ticker] =
+      coins[ticker]?.relativeDiff ||
+      computeCoins[ticker]?.relativeDiff ||
+      config.RELATIVE_DIFF;
+    return agg;
+  }, {});
 
   const raw_oracle_price_data = await near.NearView(
     config.CONTRACT_ID,
