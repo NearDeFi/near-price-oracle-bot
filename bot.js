@@ -3,11 +3,11 @@ const config = require("./config");
 const { IsDifferentEnough } = require("./functions");
 
 module.exports = {
-  updatePrices: async function (tickers, old_prices, new_prices, state) {
+  updatePrices: async function (relativeDiffs, old_prices, new_prices, state) {
     const current_time = new Date().getTime();
     let prices_to_update = [];
     const all_prices_updates = [];
-    tickers.map((ticker) => {
+    Object.entries(relativeDiffs).map(([ticker, relativeDiff]) => {
       const old_price = old_prices[ticker];
       const new_price = new_prices[ticker] || { multiplier: 0, decimals: 0 };
       console.log(
@@ -22,7 +22,7 @@ module.exports = {
           },
         };
         all_prices_updates.push(price_update);
-        if (IsDifferentEnough(old_price, new_price)) {
+        if (IsDifferentEnough(relativeDiff, old_price, new_price)) {
           console.log(`!!! Update ${ticker} price`);
           prices_to_update.push(price_update);
         }
