@@ -27,18 +27,22 @@ module.exports = {
    * @return {number}
    */
   GetAvgPrice: function (bid, ask, last){
-    if (!(bid * ask)) {
+    bid = parseFloat(bid);
+    ask = parseFloat(ask);
+    last = parseFloat(last);
+
+    if (!(bid * ask) || bid > ask || ask < bid) {
       return 0;
     }
 
     if (last <= bid) {
-      return parseFloat(bid);
+      return bid;
     }
     if (last >= ask) {
-      return parseFloat(ask);
+      return ask;
     }
 
-    return parseFloat(last);
+    return last;
   },
 
   /**

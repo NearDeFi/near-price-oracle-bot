@@ -11,6 +11,10 @@ test("Test GetAvgPrice", () => {
     expect(GetAvgPrice(0, 30, 10)).toBe(0);
     expect(GetAvgPrice(20, 0, 10)).toBe(0);
     expect(GetAvgPrice(0, 0, 0)).toBe(0);
+    expect(GetAvgPrice("20", "30", "25")).toBe(25);
+    expect(GetAvgPrice("20", "30", "40")).toBe(30);
+    expect(GetAvgPrice("20", "30", "10")).toBe(20);
+    expect(GetAvgPrice(30, 20, 25)).toBe(0);
 });
 
 test("Test IsDifferentEnough", () => {

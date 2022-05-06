@@ -14,7 +14,7 @@ module.exports = {
       .then((values) => {
         return values.reduce((object, price, index) => {
           if (price.result === "true") {
-            object[tickers_to_process[index]] = GetAvgPrice(price?.lowestAsk, price?.highestBid, price?.last);
+            object[tickers_to_process[index]] = GetAvgPrice(price?.highestBid, price?.lowestAsk, price?.last);
             return object;
           }
         }, {});
