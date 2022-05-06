@@ -9,7 +9,7 @@
     "near-api-js": "^0.42.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest func.test.js --useStderr --verbose false"
   },
   "repository": {
     "type": "git",

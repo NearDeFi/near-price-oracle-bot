@@ -1,3 +1,4 @@
+const {GetAvgPrice} = require("../functions");
 module.exports = {
   getPrices: async function (coins) {
     let tickers_to_process = Object.keys(coins).filter(
@@ -13,8 +14,7 @@ module.exports = {
       .then((values) => {
         return values.reduce((object, price, index) => {
           if (price.result === "true") {
-            object[tickers_to_process[index]] =
-              (parseFloat(price.lowestAsk) + parseFloat(price.highestBid)) / 2;
+            object[tickers_to_process[index]] = GetAvgPrice(price?.lowestAsk, price?.highestBid, price?.last);
             return object;
           }
         }, {});

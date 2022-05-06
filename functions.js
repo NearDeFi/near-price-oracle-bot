@@ -26,6 +26,24 @@ module.exports = {
   /**
    * @return {number}
    */
+  GetAvgPrice: function (bid, ask, last){
+    if (!(bid * ask)) {
+      return 0;
+    }
+
+    if (last <= bid) {
+      return parseFloat(bid);
+    }
+    if (last >= ask) {
+      return parseFloat(ask);
+    }
+
+    return parseFloat(last);
+  },
+
+  /**
+   * @return {number}
+   */
   GetMedianPrice: function (data, ticker) {
     let values = data.reduce((object, prices) => {
       if (prices?.hasOwnProperty(ticker)) {

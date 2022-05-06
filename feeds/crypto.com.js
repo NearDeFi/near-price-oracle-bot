@@ -1,3 +1,4 @@
+const {GetAvgPrice} = require("../functions");
 module.exports = {
   getPrices: async function (coins) {
     let tickers_to_process = Object.keys(coins).filter(
@@ -20,10 +21,9 @@ module.exports = {
       .then((values) => {
         return values.reduce((object, price) => {
           if (price?.result?.data?.t >= Date.now() - 10000) {
-            let ticker = price.result.data.i;
-            // last trade https://exchange-docs.crypto.com/spot/index.html#public-get-ticker
-            object[tickers_prepared[ticker]] =
-              (price.result.data.b + price.result.data.k) / 2;
+            let ticker = price?.result?.data?.i;
+            // https://exchange-docs.crypto.com/spot/index.html#public-get-ticker
+            object[tickers_prepared[ticker]] = GetAvgPrice(price?.result?.data?.b, price?.result?.data?.k, price?.result?.data?.a);
             return object;
           }
         }, {});
