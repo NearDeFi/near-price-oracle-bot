@@ -282,7 +282,7 @@ async function main() {
     )
   );
 
-  console.log(JSON.stringify(new_prices, null, 2));
+  // console.log(JSON.stringify(new_prices, null, 2));
 
   const tickers = Object.keys(coins).concat(Object.keys(computeCoins));
 
