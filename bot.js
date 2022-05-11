@@ -39,7 +39,7 @@ module.exports = {
     }
 
     if (prices_to_update.length) {
-      const resp = await near.NearCall(
+      await near.NearCall(
         config.NEAR_ACCOUNT_ID,
         config.CONTRACT_ID,
         "report_prices",
@@ -47,7 +47,6 @@ module.exports = {
           prices: prices_to_update,
         }
       );
-      console.log(resp);
     }
   },
 };

@@ -11,8 +11,6 @@ const kucoin = require("./feeds/kucoin");
 const gate = require("./feeds/gate");
 const refExchange = require("./feeds/refExchange");
 const { GetMedianPrice, LoadJson, SaveJson } = require("./functions");
-const Big = require("big.js");
-
 console.log("Welcome to the Oracle Bot");
 
 const nearConfig = config.getConfig(process.env.NODE_ENV || "development");
