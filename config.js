@@ -15,10 +15,24 @@ module.exports = {
   FRACTION_DIGITS: process.env.FRACTION_DIGITS
     ? parseInt(process.env.FRACTION_DIGITS)
     : 4,
-  // Time out is milliseconds when the process is killed.
+  // Time out in milliseconds when the process is killed.
   REPORT_TIMEOUT: process.env.REPORT_TIMEOUT
     ? parseInt(process.env.REPORT_TIMEOUT)
     : 15000,
+
+  // The filename to save bot state.
+  STATE_FILENAME: process.env.STATE_FILENAME || "./data/state.json",
+
+  // Time period in milliseconds to do full price refresh, helps save on gas.
+  FULL_UPDATE_PERIOD: process.env.FULL_UPDATE_PERIOD
+    ? parseInt(process.env.FULL_UPDATE_PERIOD)
+    : 600000,
+
+  PRINT_DEBUG: !!process.env.PRINT_DEBUG,
+
+  MIN_USN_LIQUIDITY_IN_POOL: process.env.MIN_USN_LIQUIDITY_IN_POOL
+    ? parseFloat(process.env.MIN_USN_LIQUIDITY_IN_POOL)
+    : 10_000_000 * 1e18,
 
   getConfig: (env) => {
     switch (env) {
@@ -31,6 +45,7 @@ module.exports = {
           walletUrl: "https://wallet.near.org",
           helperUrl: "https://helper.mainnet.near.org",
           explorerUrl: "https://explorer.mainnet.near.org",
+          refContractName: "v2.ref-finance.near",
         };
       case "development":
       case "testnet":
@@ -41,6 +56,7 @@ module.exports = {
           walletUrl: "https://wallet.testnet.near.org",
           helperUrl: "https://helper.testnet.near.org",
           explorerUrl: "https://explorer.testnet.near.org",
+          refContractName: "ref-finance-101.testnet",
         };
       case "betanet":
         return {

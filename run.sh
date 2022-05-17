@@ -5,6 +5,7 @@ export NODE_ENV=mainnet
 # TODO: Add your account ID
 # export NEAR_ACCOUNT_ID=abc.near
 export CONTRACT_ID=priceoracle.near
+export PRINT_DEBUG=true
 
 cd $(dirname "$0")
 mkdir -p logs

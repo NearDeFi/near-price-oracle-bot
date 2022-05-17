@@ -1,10 +1,11 @@
 const config = require("./config");
+const fs = require("fs");
 
 module.exports = {
   /**
    * @return {boolean}
    */
-  IsDifferentEnough: function (price_old, price_new) {
+  IsDifferentEnough: function (relativeDiff, price_old, price_new) {
     const max_decimals = Math.max(price_new.decimals, price_old.decimals);
     const old_multiplier =
       price_old.multiplier *
@@ -18,9 +19,30 @@ module.exports = {
         : 1);
 
     return (
-      Math.abs(new_multiplier - old_multiplier) >=
-      old_multiplier * config.RELATIVE_DIFF
+      Math.abs(new_multiplier - old_multiplier) >= old_multiplier * relativeDiff
     );
+  },
+
+  /**
+   * @return {number}
+   */
+  GetAvgPrice: function (bid, ask, last){
+    bid = parseFloat(bid);
+    ask = parseFloat(ask);
+    last = parseFloat(last);
+
+    if (!(bid * ask) || bid > ask || ask < bid) {
+      return 0;
+    }
+
+    if (last <= bid) {
+      return bid;
+    }
+    if (last >= ask) {
+      return ask;
+    }
+
+    return last;
   },
 
   /**
@@ -28,9 +50,18 @@ module.exports = {
    */
   GetMedianPrice: function (data, ticker) {
     let values = data.reduce((object, prices) => {
-      if (prices.hasOwnProperty(ticker)) object.push(prices[ticker]);
+      if (prices?.hasOwnProperty(ticker)) {
+        object.push(prices[ticker]);
+      }
       return object;
     }, []);
+
+    if (config.PRINT_DEBUG) {
+      const textPrices = values
+        .map((price) => (price ? price.toFixed(4) : price))
+        .join(" ");
+      console.debug(`DEBUG: ${ticker} prices: ${textPrices}`);
+    }
 
     if (!values.length) return 0;
 
@@ -41,5 +72,26 @@ module.exports = {
     if (values.length % 2) return values[half];
 
     return (values[half - 1] + values[half]) / 2.0;
+  },
+
+  LoadJson: function (filename, ignoreError = true) {
+    try {
+      let rawData = fs.readFileSync(filename);
+      return JSON.parse(rawData);
+    } catch (e) {
+      if (!ignoreError) {
+        console.error("Failed to load JSON:", filename, e);
+      }
+    }
+    return null;
+  },
+
+  SaveJson: function (json, filename) {
+    try {
+      const data = JSON.stringify(json);
+      fs.writeFileSync(filename, data);
+    } catch (e) {
+      console.error("Failed to save JSON:", filename, e);
+    }
   },
 };
