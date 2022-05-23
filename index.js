@@ -225,7 +225,7 @@ const MainnetComputeCoins = {
         );
         const liNearMultiplier = parseFloat(rawLiNearPrice) / 1e24;
         // TODO: Update 1.25 in about 1 year (May, 2023)
-        if (liNearMultiplier < 1.0 || liNearMultiplier > 1.25) {
+        if (liNearMultiplier < 1.0 || liNearMultiplier > 1.15) {
           console.error("liNearMultiplier is out of range:", liNearMultiplier);
           return null;
         }
