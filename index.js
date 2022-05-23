@@ -211,6 +211,34 @@ const MainnetComputeCoins = {
       }
     },
   },
+  "linear-protocol.near": {
+    dependencyCoin: "wrap.near",
+    computeCall: async (dependencyPrice) => {
+      if (!dependencyPrice) {
+        return null;
+      }
+      try {
+        const rawLiNearPrice = await near.NearView(
+          "linear-protocol.near",
+          "ft_price",
+          {}
+        );
+        const liNearMultiplier = parseFloat(rawLiNearPrice) / 1e24;
+        // TODO: Update 1.25 in about 1 year (May, 2023)
+        if (liNearMultiplier < 1.0 || liNearMultiplier > 1.25) {
+          console.error("liNearMultiplier is out of range:", liNearMultiplier);
+          return null;
+        }
+        return {
+          multiplier: Math.round(dependencyPrice.multiplier * liNearMultiplier),
+          decimals: dependencyPrice.decimals,
+        };
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
+    },
+  },
   usn: computeUsn(
     "usn",
     "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near",
