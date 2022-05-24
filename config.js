@@ -40,7 +40,7 @@ module.exports = {
       case "mainnet":
         return {
           networkId: "mainnet",
-          nodeUrl: "https://rpc.mainnet.near.org",
+          nodeUrl: process.env.NODE_URL || "https://rpc.mainnet.near.org",
           contractName: CONTRACT_NAME || "null_address.near",
           walletUrl: "https://wallet.near.org",
           helperUrl: "https://helper.mainnet.near.org",
@@ -51,7 +51,7 @@ module.exports = {
       case "testnet":
         return {
           networkId: "testnet",
-          nodeUrl: "https://rpc.testnet.near.org",
+          nodeUrl: process.env.NODE_URL || "https://rpc.testnet.near.org",
           contractName: CONTRACT_NAME || "null_address.testnet",
           walletUrl: "https://wallet.testnet.near.org",
           helperUrl: "https://helper.testnet.near.org",
@@ -61,7 +61,7 @@ module.exports = {
       case "betanet":
         return {
           networkId: "betanet",
-          nodeUrl: "https://rpc.betanet.near.org",
+          nodeUrl: process.env.NODE_URL || "https://rpc.betanet.near.org",
           contractName: CONTRACT_NAME,
           walletUrl: "https://wallet.betanet.near.org",
           helperUrl: "https://helper.betanet.near.org",
