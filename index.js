@@ -178,10 +178,6 @@ const computeUsn = (usnTokenId, usdtTokenId, stablePoolId) => {
 };
 
 const MainnetComputeCoins = {
-  "c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.factory.bridge.near": {
-    dependencyCoin: "aurora",
-    computeCall: async (dependencyPrice) => dependencyPrice,
-  },
   "meta-pool.near": {
     dependencyCoin: "wrap.near",
     computeCall: async (dependencyPrice) => {
