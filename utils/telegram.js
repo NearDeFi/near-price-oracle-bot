@@ -7,10 +7,14 @@ module.exports = {
                 const client = new TelegramClient({
                     accessToken
                 });
-                await client.sendMessage(chatId, message)
+                let resp = await client.sendMessage(chatId, message)
                     .catch(err => {
                         console.error(err);
                     });
+
+                if(!resp.hasOwnProperty("messageId")) {
+                    console.log(`sendToTelegram notification failed: ${JSON.stringify(resp)}`);
+                }
             }
         }
         catch (err) {

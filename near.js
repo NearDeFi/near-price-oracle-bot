@@ -59,6 +59,7 @@ module.exports = {
         return notify(`Failed operation: ${operation}`);
       }
     } catch (e) {
+      console.log(e.message);
       return notify(`Call processed with unknown result: ${e.message}`);
     }
   },

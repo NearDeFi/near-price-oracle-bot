@@ -1,3 +1,5 @@
+const {fetchWithTimeout} = require("../functions");
+
 module.exports = {
     getPrices: async function (coins) {
         let tickers_to_process = Object.keys(coins)
@@ -8,7 +10,8 @@ module.exports = {
             return object
         }, {});
 
-        return Promise.all(tickers_to_process.map(ticker => fetch(`https://ftx.com/api/markets/${coins[ticker].ftx}`)))
+
+        return Promise.all(tickers_to_process.map(ticker => fetchWithTimeout(`https://ftx.com/api/markets/${coins[ticker].ftx}`)))
             .then(responses => Promise.all(responses.map(res => res.json())))
             .then(values => {
                 return values.reduce((object, price) => {

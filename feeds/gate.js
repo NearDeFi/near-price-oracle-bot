@@ -1,4 +1,4 @@
-const {GetAvgPrice} = require("../functions");
+const {GetAvgPrice, fetchWithTimeout} = require("../functions");
 module.exports = {
   getPrices: async function (coins) {
     let tickers_to_process = Object.keys(coins).filter(
@@ -7,7 +7,7 @@ module.exports = {
 
     return Promise.all(
       tickers_to_process.map((ticker) =>
-        fetch(`https://data.gateapi.io/api2/1/ticker/${coins[ticker].gate}`)
+        fetchWithTimeout(`https://data.gateapi.io/api2/1/ticker/${coins[ticker].gate}`)
       )
     )
       .then((responses) => Promise.all(responses.map((res) => res.json())))

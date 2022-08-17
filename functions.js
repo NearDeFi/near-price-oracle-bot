@@ -1,3 +1,6 @@
+const {AbortController} = require("node-abort-controller");
+global.AbortController = AbortController;
+
 const config = require("./config");
 const fs = require("fs");
 
@@ -94,4 +97,27 @@ module.exports = {
       console.error("Failed to save JSON:", filename, e);
     }
   },
+
+  fetchWithTimeout: async function (resource, options = {}) {
+    const {timeout = 5000} = options;
+
+    const controller = new AbortController();
+    try {
+      const id = setTimeout(() => {
+        console.log(`!!!Abort on Fetch Timeout: ${resource}`);
+        controller.abort();
+      }, timeout);
+      const response = await fetch(resource, {
+        ...options,
+        signal: controller.signal
+      });
+      clearTimeout(id);
+      return response;
+    } catch (err) {
+      if(!controller.signal.aborted){
+        console.log(err);
+      }
+      return Promise.reject("fetchWithTimeout rejected");
+    }
+  }
 };

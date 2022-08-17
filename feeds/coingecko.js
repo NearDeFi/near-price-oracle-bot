@@ -6,8 +6,8 @@ module.exports = {
             const tickers = Object.keys(coins);
 
             const client = new CoinGeckoClient({
-                timeout: 10000,
-                autoRetry: true,
+                timeout: 5000,
+                autoRetry: false,
             });
 
             let prices = await client.simplePrice({
@@ -16,7 +16,7 @@ module.exports = {
             });
 
             return tickers.reduce((object, ticker) => {
-                object[ticker] = parseFloat(prices[coins[ticker].coingecko].usd);
+                object[ticker] = parseFloat(prices[coins[ticker].coingecko]?.usd || 0);
                 return object;
             }, {});
         } catch (error) {
