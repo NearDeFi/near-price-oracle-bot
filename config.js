@@ -1,8 +1,11 @@
-const CONTRACT_NAME = process.env.CONTRACT_NAME || "null_address.testnet";
+const CONTRACT_NAME = process.env.CONTRACT_NAME || "oracle.testnet";
 
 module.exports = {
-  CONTRACT_ID: process.env.CONTRACT_ID || "priceoracle.testnet",
-  NEAR_ACCOUNT_ID: process.env.NEAR_ACCOUNT_ID || "zavodil.testnet",
+  CONTRACT_ID: CONTRACT_NAME,
+  NEAR_ACCOUNT_ID: process.env.NEAR_ACCOUNT_ID || "account.testnet",
+  TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
+  TELEGRAM_TOKEN: process.env.TELEGRAM_TOKEN,
+
   // Will report the prices at least every 50 seconds
   MAX_NO_REPORT_DURATION: process.env.MAX_NO_REPORT_DURATION
     ? parseFloat(process.env.MAX_NO_REPORT_DURATION)

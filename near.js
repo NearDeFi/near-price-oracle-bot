@@ -2,7 +2,9 @@ const homedir = require("os").homedir();
 const fs = require("fs");
 const path = require("path");
 const nearApi = require("near-api-js");
-const { getConfig } = require("./config");
+const {getConfig} = require("./config");
+const {notify} = require("./utils/notification");
+
 
 const nearConfig = getConfig(process.env.NODE_ENV || "development");
 const CREDENTIALS_DIR =
@@ -22,42 +24,43 @@ module.exports = {
   },
 
   NearCall: async function (account_id, contract, operation, parameters) {
-    const privateKey = await GetPrivateKey(account_id);
-
-    const keyPair = nearApi.utils.KeyPair.fromString(privateKey);
-    const keyStore = new nearApi.keyStores.InMemoryKeyStore();
-    keyStore.setKey("default", account_id, keyPair);
-
-    const near = await nearApi.connect({
-      networkId: "default",
-      deps: { keyStore },
-      masterAccount: account_id,
-      nodeUrl: nearConfig.nodeUrl,
-    });
-
-    const account = await near.account(account_id);
-
-    const call = await account.functionCall({
-      contractId: contract,
-      methodName: operation,
-      args: parameters,
-      gas: GAS,
-      attachedDeposit: "0",
-    });
-
     try {
+      const privateKey = await GetPrivateKey(account_id);
+
+      const keyPair = nearApi.utils.KeyPair.fromString(privateKey);
+      const keyStore = new nearApi.keyStores.InMemoryKeyStore();
+      keyStore.setKey("default", account_id, keyPair);
+
+      const near = await nearApi.connect({
+        networkId: "default",
+        deps: { keyStore },
+        masterAccount: account_id,
+        nodeUrl: nearConfig.nodeUrl,
+      });
+
+      const account = await near.account(account_id);
+
+      const call = await account.functionCall({
+        contractId: contract,
+        methodName: operation,
+        args: parameters,
+        gas: GAS,
+        attachedDeposit: "0",
+      });
+
       if (call["status"].hasOwnProperty("SuccessValue")) {
         let logs = [];
         call["receipts_outcome"].map((receipts_outcome) => {
           if (receipts_outcome ?? ["outcome"] ?? ["logs"].length)
             receipts_outcome["outcome"]["logs"].map((log) => logs.push(log));
         });
-        return `Successful operation: ${operation}!\n\r${logs.join("\n\r")}`;
+        console.log(`Successful operation: ${operation}!\n\r${logs.join("\n\r")}`);
       } else {
-        return `Failed operation: ${operation}`;
+        return notify(`Failed operation: ${operation}`);
       }
     } catch (e) {
-      return "Call processed with unknown result";
+      console.log(e.message);
+      return notify(`Call processed with unknown result: ${e.message}`);
     }
   },
 };

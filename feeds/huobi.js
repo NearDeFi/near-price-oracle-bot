@@ -1,3 +1,4 @@
+const {fetchWithTimeout} = require("../functions");
 module.exports = {
     getPrices: async function (coins) {
         let tickers_to_process = Object.keys(coins).filter(
@@ -8,7 +9,7 @@ module.exports = {
         await Promise.all(
             tickers_to_process.map((ticker) =>
                 (async () => {
-                    let res = await fetch(
+                    let res = await fetchWithTimeout(
                         `https://api.huobi.pro/market/detail/merged?symbol=${coins[ticker].huobi}`
                     );
                     res = await res.json();

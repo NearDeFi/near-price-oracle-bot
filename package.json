@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "big.js": "^6.1.1",
     "binance-api-node": "^0.11.13",
-    "coingecko-api-v3": "0.0.12",
+    "coingecko-api-v3": "0.0.13",
+    "messaging-api-telegram": "^1.1.0",
     "near-api-js": "^0.42.0",
-    "big.js": "^6.1.1"
+    "node-abort-controller": "^3.0.1"
   },
   "scripts": {
     "test": "jest func.test.js --useStderr --verbose false"

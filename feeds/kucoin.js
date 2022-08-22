@@ -1,4 +1,5 @@
-const {GetAvgPrice} = require("../functions");
+const {GetAvgPrice, fetchWithTimeout} = require("../functions");
+
 module.exports = {
   getPrices: async function (coins) {
     let tickers_to_process = Object.keys(coins).filter(
@@ -7,7 +8,7 @@ module.exports = {
 
     return Promise.all(
       tickers_to_process.map((ticker) =>
-        fetch(
+        fetchWithTimeout(
           `https://api.kucoin.com/api/v1/market/orderbook/level1?symbol=${coins[ticker].kucoin}`
         )
       )

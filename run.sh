@@ -16,5 +16,5 @@ do
   date | tee -a logs/logs_$DATE.txt
   # TODO: Update your path to the node binary if necessary
   /usr/local/bin/node index.js 2>&1 | tee -a logs/logs_$DATE.txt
-  sleep 1
+  sleep 5
 done
