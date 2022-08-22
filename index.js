@@ -86,6 +86,7 @@ const TestnetCoins = {
     cryptocom: "WOO_USDT",
     kucoin: "WOO-USDT",
     gate: "woo_usdt",
+    relativeDiff: 0.01, // 1%
   }
 };
 
@@ -160,6 +161,7 @@ const MainnetCoins = {
     cryptocom: "WOO_USDT",
     kucoin: "WOO-USDT",
     gate: "woo_usdt",
+    relativeDiff: 0.01, // 1%
   }
 };
 
