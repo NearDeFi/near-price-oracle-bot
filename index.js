@@ -78,6 +78,15 @@ const TestnetCoins = {
     gate: "aurora_usdt",
     relativeDiff: 0.01, // 1%
   },
+  "woo.orderly.testnet": {
+    decimals: 18,
+    coingecko: "woo-network",
+    binance: "WOOUSDT",
+    huobi: "woousdt",
+    cryptocom: "WOO_USDT",
+    kucoin: "WOO-USDT",
+    gate: "woo_usdt",
+  }
 };
 
 const MainnetCoins = {
@@ -143,6 +152,15 @@ const MainnetCoins = {
     gate: "aurora_usdt",
     relativeDiff: 0.01, // 1%
   },
+  "4691937a7508860f876c9c0a2a617e7d9e945d4b.factory.bridge.near": {
+    decimals: 18,
+    coingecko: "woo-network",
+    binance: "WOOUSDT",
+    huobi: "woousdt",
+    cryptocom: "WOO_USDT",
+    kucoin: "WOO-USDT",
+    gate: "woo_usdt",
+  }
 };
 
 const computeUsn = (usnTokenId, usdtTokenId, stablePoolId) => {
