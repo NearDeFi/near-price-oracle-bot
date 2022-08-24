@@ -1,6 +1,6 @@
-# near-oracle-bot test
+# Near Price Oracle bot
 
-### Near Price Oracle bot as a service (Linux)
+### Hot to run a Near Price Oracle bot as a service (Linux)
 
 - Update `/service/near-oracle.service` to specify user and path (ExecStart)
 - Install service: `./install.sh`
