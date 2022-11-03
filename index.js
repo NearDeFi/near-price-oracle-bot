@@ -211,6 +211,14 @@ const MainnetComputeCoins = {
         return null;
       }
       try {
+        const metadata = await near.NearView(
+          "meta-pool.near",
+          "ft_metadata",
+          {}
+        );
+        if (metadata.decimals !== 24) {
+          return null;
+        }
         const rawStNearState = await near.NearView(
           "meta-pool.near",
           "get_contract_state",
