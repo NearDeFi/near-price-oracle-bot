@@ -6,7 +6,6 @@ const binance = require("./feeds/binance");
 const binanceFutures = require("./feeds/binance-futures");
 const huobi = require("./feeds/huobi");
 const cryptocom = require("./feeds/crypto.com");
-const ftx = require("./feeds/ftx");
 const kucoin = require("./feeds/kucoin");
 const gate = require("./feeds/gate");
 const refExchange = require("./feeds/refExchange");
@@ -21,7 +20,6 @@ const TestnetCoins = {
     coingecko: "near",
     binance: "NEARUSDT",
     huobi: "nearusdt",
-    ftx: "NEAR/USD",
     cryptocom: "NEAR_USDT",
     kucoin: "NEAR-USDT",
     gate: "near_usdt",
@@ -31,7 +29,6 @@ const TestnetCoins = {
     coingecko: "ethereum",
     binance: "ETHUSDT",
     huobi: "ethusdt",
-    ftx: "ETH/USD",
     cryptocom: "ETH_USDT",
     kucoin: "ETH-USDT",
     gate: "eth_usdt",
@@ -41,7 +38,6 @@ const TestnetCoins = {
     decimals: 6,
     stablecoin: true,
     coingecko: "tether",
-    ftx: "USDT/USD",
     gate: "usdt_usd",
   },
   "usdc.fakes.testnet": {
@@ -56,7 +52,6 @@ const TestnetCoins = {
     stablecoin: true,
     coingecko: "dai",
     huobi: "daiusdt",
-    ftx: "DAI/USD",
     cryptocom: "DAI_USDT",
     gate: "dai_usdt",
   },
@@ -65,7 +60,6 @@ const TestnetCoins = {
     coingecko: "wrapped-bitcoin",
     binance: "BTCUSDT",
     huobi: "btcusdt",
-    ftx: "BTC/USD",
     cryptocom: "BTC_USDT",
     kucoin: "BTC-USDT",
     gate: "btc_usdt",
@@ -100,7 +94,6 @@ const MainnetCoins = {
     coingecko: "near",
     binance: "NEARUSDT",
     huobi: "nearusdt",
-    ftx: "NEAR/USD",
     cryptocom: "NEAR_USDT",
     kucoin: "NEAR-USDT",
     gate: "near_usdt",
@@ -110,7 +103,6 @@ const MainnetCoins = {
     coingecko: "ethereum",
     binance: "ETHUSDT",
     huobi: "ethusdt",
-    ftx: "ETH/USD",
     cryptocom: "ETH_USDT",
     kucoin: "ETH-USDT",
     gate: "eth_usdt",
@@ -120,7 +112,6 @@ const MainnetCoins = {
     decimals: 6,
     stablecoin: true,
     coingecko: "tether",
-    ftx: "USDT/USD",
     gate: "usdt_usd",
   },
   "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near": {
@@ -135,7 +126,6 @@ const MainnetCoins = {
     stablecoin: true,
     coingecko: "dai",
     huobi: "daiusdt",
-    ftx: "DAI/USD",
     cryptocom: "DAI_USDT",
     gate: "dai_usdt",
   },
@@ -144,7 +134,6 @@ const MainnetCoins = {
     coingecko: "wrapped-bitcoin",
     binance: "BTCUSDT",
     huobi: "btcusdt",
-    ftx: "BTC/USD",
     cryptocom: "BTC_USDT",
     kucoin: "BTC-USDT",
     gate: "btc_usdt",
@@ -303,7 +292,6 @@ async function main() {
     coingecko.getPrices(coins),
     binanceFutures.getPrices(coins),
     huobi.getPrices(coins),
-    ftx.getPrices(coins),
     cryptocom.getPrices(coins),
     kucoin.getPrices(coins),
     gate.getPrices(coins),
