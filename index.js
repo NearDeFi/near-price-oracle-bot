@@ -258,6 +258,34 @@ const MainnetComputeCoins = {
       }
     },
   },
+  "v2-nearx.stader-labs.near": {
+    dependencyCoin: "wrap.near",
+    computeCall: async (dependencyPrice) => {
+      if (!dependencyPrice) {
+        return null;
+      }
+      try {
+        const nearXPrice = await near.NearView(
+            "v2-nearx.stader-labs.near",
+            "get_nearx_price",
+            {}
+        );
+        const nearXMultiplier = parseFloat(nearXPrice) / 1e24;
+        // TODO: Update 1.2 in about 1 year (May, 2023)
+        if (nearXMultiplier < 1.0 || nearXMultiplier > 1.15) {
+          console.error("nearXMultiplier is out of range:", nearXMultiplier);
+          return null;
+        }
+        return {
+          multiplier: Math.round(dependencyPrice.multiplier * nearXMultiplier),
+          decimals: dependencyPrice.decimals,
+        };
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
+    },
+  },
   usn: computeUsn(
     "usn",
     "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near",
