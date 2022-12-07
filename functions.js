@@ -1,4 +1,5 @@
 const {AbortController} = require("node-abort-controller");
+const Big = require("big.js");
 global.AbortController = AbortController;
 
 const config = require("./config");
@@ -8,7 +9,7 @@ module.exports = {
   /**
    * @return {boolean}
    */
-  IsDifferentEnough: function (relativeDiff, price_old, price_new) {
+  IsDifferentEnough: function (relative_diff, price_old, price_new) {
     const max_decimals = Math.max(price_new.decimals, price_old.decimals);
     const old_multiplier =
       price_old.multiplier *
@@ -22,7 +23,7 @@ module.exports = {
         : 1);
 
     return (
-      Math.abs(new_multiplier - old_multiplier) >= old_multiplier * relativeDiff
+      Math.abs(new_multiplier - old_multiplier) >= old_multiplier * relative_diff
     );
   },
 
@@ -119,5 +120,10 @@ module.exports = {
       }
       return Promise.reject("fetchWithTimeout rejected");
     }
+  },
+
+  getMilliSecDiffTimeFromNow: function(timestampNanoSec) {
+    const timestampMilliSec = timestampNanoSec ? new Big(timestampNanoSec).div(1000000).toNumber() : 0;
+    return (Date.now() - timestampMilliSec).toFixed()
   }
 };

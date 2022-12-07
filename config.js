@@ -6,10 +6,6 @@ module.exports = {
   TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
   TELEGRAM_TOKEN: process.env.TELEGRAM_TOKEN,
 
-  // Will report the prices at least every 50 seconds
-  MAX_NO_REPORT_DURATION: process.env.MAX_NO_REPORT_DURATION
-    ? parseFloat(process.env.MAX_NO_REPORT_DURATION)
-    : 50000,
   // Relative difference. Default 0.005 or 0.5%
   RELATIVE_DIFF: process.env.RELATIVE_DIFF
     ? parseFloat(process.env.RELATIVE_DIFF)
@@ -31,11 +27,18 @@ module.exports = {
     ? parseInt(process.env.FULL_UPDATE_PERIOD)
     : 600000,
 
+  // Time period in milliseconds to update asset every 50 seconds
+  ASSET_UPDATE_PERIOD: process.env.ASSET_UPDATE_PERIOD
+    ? parseInt(process.env.ASSET_UPDATE_PERIOD)
+    : 50000,
+
   PRINT_DEBUG: !!process.env.PRINT_DEBUG,
 
   MIN_USN_LIQUIDITY_IN_POOL: process.env.MIN_USN_LIQUIDITY_IN_POOL
     ? parseFloat(process.env.MIN_USN_LIQUIDITY_IN_POOL)
     : 10_000_000 * 1e18,
+
+  STATUS_ACTIVE: "Active",
 
   getConfig: (env) => {
     switch (env) {

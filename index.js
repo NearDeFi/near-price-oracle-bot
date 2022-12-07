@@ -361,7 +361,8 @@ async function main() {
   // console.log(JSON.stringify(new_prices, null, 2));
 
   const tickers = Object.keys(coins).concat(Object.keys(computeCoins));
-  const relativeDiffs = tickers.reduce((agg, ticker) => {
+  // Relative difference for every ticker, default is 0.5%
+  const relative_diffs = tickers.reduce((agg, ticker) => {
     agg[ticker] =
       coins[ticker]?.relativeDiff ||
       computeCoins[ticker]?.relativeDiff ||
@@ -375,21 +376,32 @@ async function main() {
     {
       account_id: config.NEAR_ACCOUNT_ID,
       asset_ids: tickers,
-      recency_duration_sec: Math.floor(config.MAX_NO_REPORT_DURATION / 1000),
+      recency_duration_sec: Math.floor(config.FULL_UPDATE_PERIOD / 1000),
     }
   );
 
-  const old_prices = raw_oracle_price_data.prices.reduce(
+  const old_prices_data = raw_oracle_price_data.reduce(
     (obj, item) =>
       Object.assign(obj, {
-        [item.asset_id]: item.price
-          ? { multiplier: item.price.multiplier, decimals: item.price.decimals }
-          : { multiplier: 0, decimals: 0 },
+        [item.asset_id]: {
+          price: item.price
+              ? { multiplier: item.price.multiplier, decimals: item.price.decimals }
+              : { multiplier: 0, decimals: 0 },
+          timestamp: item.timestamp
+        },
       }),
     {}
   );
 
-  await bot.updatePrices(relativeDiffs, old_prices, new_prices, state);
+  const asset_statuses = raw_oracle_price_data.reduce(
+      (obj, item) =>
+          Object.assign(obj, {
+            [item.asset_id]: item.status,
+          }),
+      {}
+  );
+
+  await bot.updatePrices(relative_diffs, old_prices_data, new_prices, asset_statuses, state);
 
   SaveJson(state, config.STATE_FILENAME);
 }
