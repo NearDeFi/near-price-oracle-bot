@@ -333,7 +333,7 @@ async function main() {
 
     // Since stable coins rely only on coingecko price, to prevent further risks, we limit the range.
     if (coins[ticker].stablecoin && price > 0) {
-      if (price < 0.95 || price > 1.05) {
+      if (price < 0.85 || price > 1.05) {
         console.error(
           `Stablecoin price of ${ticker} is out of range: ${price}`
         );
