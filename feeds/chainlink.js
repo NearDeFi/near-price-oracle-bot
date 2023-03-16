@@ -37,7 +37,7 @@ module.exports = {
                     })
                         .then(resp => resp.json())
                         .then(resp => {
-                            return (web3.utils.toDecimal(resp.result ?? 0))
+                            return (web3.utils.toDecimal(resp?.result ?? 0))
                         });
                     prices[address] = res / 100000000;
                 })().catch(function (error) {
