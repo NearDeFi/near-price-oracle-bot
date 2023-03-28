@@ -8,6 +8,7 @@ const huobi = require("./feeds/huobi");
 const cryptocom = require("./feeds/crypto.com");
 const kucoin = require("./feeds/kucoin");
 const gate = require("./feeds/gate");
+const chainlink = require("./feeds/chainlink");
 const refExchange = require("./feeds/refExchange");
 const { GetMedianPrice, LoadJson, SaveJson } = require("./functions");
 console.log("Welcome to the Oracle Bot");
@@ -23,6 +24,7 @@ const TestnetCoins = {
     cryptocom: "NEAR_USDT",
     kucoin: "NEAR-USDT",
     gate: "near_usdt",
+    chainlink: "0xC12A6d1D827e23318266Ef16Ba6F397F2F91dA9b"
   },
   aurora: {
     decimals: 18,
@@ -32,6 +34,7 @@ const TestnetCoins = {
     cryptocom: "ETH_USDT",
     kucoin: "ETH-USDT",
     gate: "eth_usdt",
+    chainlink: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
     fractionDigits: 2
   },
   "usdt.fakes.testnet": {
@@ -39,6 +42,7 @@ const TestnetCoins = {
     stablecoin: true,
     coingecko: "tether",
     gate: "usdt_usd",
+    chainlink: "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D"
   },
   "usdc.fakes.testnet": {
     decimals: 6,
@@ -46,6 +50,8 @@ const TestnetCoins = {
     coingecko: "usd-coin",
     cryptocom: "USDC_USDT",
     kucoin: "USDC-USDT",
+    binance: "USDCUSDT",
+    chainlink: "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6"
   },
   "dai.fakes.testnet": {
     decimals: 18,
@@ -54,6 +60,8 @@ const TestnetCoins = {
     huobi: "daiusdt",
     cryptocom: "DAI_USDT",
     gate: "dai_usdt",
+    binance: "DAIUSDT",
+    chainlink: "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9"
   },
   "wbtc.fakes.testnet": {
     decimals: 8,
@@ -63,6 +71,7 @@ const TestnetCoins = {
     cryptocom: "BTC_USDT",
     kucoin: "BTC-USDT",
     gate: "btc_usdt",
+    chainlink: "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c",
     fractionDigits: 2
   },
   "aurora.fakes.testnet": {
@@ -97,6 +106,7 @@ const MainnetCoins = {
     cryptocom: "NEAR_USDT",
     kucoin: "NEAR-USDT",
     gate: "near_usdt",
+    chainlink: "0xC12A6d1D827e23318266Ef16Ba6F397F2F91dA9b"
   },
   aurora: {
     decimals: 18,
@@ -106,6 +116,7 @@ const MainnetCoins = {
     cryptocom: "ETH_USDT",
     kucoin: "ETH-USDT",
     gate: "eth_usdt",
+    chainlink: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
     fractionDigits: 2
   },
   "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near": {
@@ -113,6 +124,7 @@ const MainnetCoins = {
     stablecoin: true,
     coingecko: "tether",
     gate: "usdt_usd",
+    chainlink: "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D"
   },
   "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near": {
     decimals: 6,
@@ -120,6 +132,8 @@ const MainnetCoins = {
     coingecko: "usd-coin",
     cryptocom: "USDC_USDT",
     kucoin: "USDC-USDT",
+    binance: "USDCUSDT",
+    chainlink: "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6"
   },
   "6b175474e89094c44da98b954eedeac495271d0f.factory.bridge.near": {
     decimals: 18,
@@ -128,6 +142,8 @@ const MainnetCoins = {
     huobi: "daiusdt",
     cryptocom: "DAI_USDT",
     gate: "dai_usdt",
+    binance: "DAIUSDT",
+    chainlink: "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9"
   },
   "2260fac5e5542a773aa44fbcfedf7c193bc2c599.factory.bridge.near": {
     decimals: 8,
@@ -137,6 +153,7 @@ const MainnetCoins = {
     cryptocom: "BTC_USDT",
     kucoin: "BTC-USDT",
     gate: "btc_usdt",
+    chainlink: "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c",
     fractionDigits: 2
   },
   "aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near": {
@@ -323,6 +340,7 @@ async function main() {
     cryptocom.getPrices(coins),
     kucoin.getPrices(coins),
     gate.getPrices(coins),
+    chainlink.getPrices(coins),
   ]);
 
   const new_prices = Object.keys(coins).reduce((object, ticker) => {
@@ -333,7 +351,7 @@ async function main() {
 
     // Since stable coins rely only on coingecko price, to prevent further risks, we limit the range.
     if (coins[ticker].stablecoin && price > 0) {
-      if (price < 0.85 || price > 1.05) {
+      if (price < 0.95 || price > 1.05) {
         console.error(
           `Stablecoin price of ${ticker} is out of range: ${price}`
         );
