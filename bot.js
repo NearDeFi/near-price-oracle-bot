@@ -1,6 +1,7 @@
 const near = require("./near");
 const config = require("./config");
 const { IsDifferentEnough } = require("./functions");
+const pjson = require('./package.json');
 
 module.exports = {
   updatePrices: async function (relativeDiffs, old_prices, new_prices, state) {
@@ -38,14 +39,25 @@ module.exports = {
       console.log(`!!! Executing full price update`);
     }
 
-    if (prices_to_update.length) {
+    const txParameters = {
+      prices: prices_to_update,
+    };
+
+    if (
+        state.lastVersionReportTimestamp + config.VERSION_REPORT_PERIOD <=
+        current_time
+    ) {
+      state.lastVersionReportTimestamp = current_time;
+      txParameters.version = pjson.version;
+      console.log(`!!! Reporting version of the bot: ${pjson.version}`);
+    }
+
+    if (prices_to_update.length || !!txParameters.version ) {
       await near.NearCall(
         config.NEAR_ACCOUNT_ID,
         config.CONTRACT_ID,
         "report_prices",
-        {
-          prices: prices_to_update,
-        }
+          txParameters
       );
     }
   },

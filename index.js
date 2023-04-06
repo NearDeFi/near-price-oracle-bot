@@ -324,6 +324,7 @@ const computeCoins = mainnet ? MainnetComputeCoins : TestnetComputeCoins;
 
 const DefaultState = {
   lastFullUpdateTimestamp: 0,
+  lastVersionReportTimestamp: 0,
 };
 
 async function main() {

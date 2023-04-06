@@ -31,6 +31,11 @@ module.exports = {
     ? parseInt(process.env.FULL_UPDATE_PERIOD)
     : 600000,
 
+  // Time period in milliseconds to report about version of the bot
+  VERSION_REPORT_PERIOD: process.env.VERSION_REPORT_PERIOD
+      ? parseInt(process.env.VERSION_REPORT_PERIOD)
+      : 86400000, // 1 day
+
   PRINT_DEBUG: !!process.env.PRINT_DEBUG,
 
   MIN_USN_LIQUIDITY_IN_POOL: process.env.MIN_USN_LIQUIDITY_IN_POOL
