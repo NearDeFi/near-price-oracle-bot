@@ -45,6 +45,7 @@ module.exports = {
 
     if (
         pjson?.version &&
+        prices_to_update.length &&
         state.lastVersionReportTimestamp + config.VERSION_REPORT_PERIOD <= current_time
     ) {
       state.lastVersionReportTimestamp = current_time;
