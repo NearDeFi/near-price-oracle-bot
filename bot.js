@@ -44,12 +44,12 @@ module.exports = {
     };
 
     if (
-        state.lastVersionReportTimestamp + config.VERSION_REPORT_PERIOD <=
-        current_time
+        pjson?.version &&
+        state.lastVersionReportTimestamp + config.VERSION_REPORT_PERIOD <= current_time
     ) {
       state.lastVersionReportTimestamp = current_time;
-      txParameters.version = pjson.version;
-      console.log(`!!! Reporting version of the bot: ${pjson.version}`);
+      txParameters.version = pjson?.version;
+      console.log(`!!! Reporting version of the bot: ${pjson?.version}`);
     }
 
     if (prices_to_update.length || !!txParameters.version ) {

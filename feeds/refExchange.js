@@ -463,7 +463,7 @@ async function computeUsnPriceMultiplier(
   stablePoolId
 ) {
   const refFinance = await prepareRef(near, [stablePoolId]);
-  const humanAmountIn = Big(1000000);
+  const humanAmountIn = Big(10000);
   const usnSwapInfo = findBestReturn(
     refFinance,
     usnTokenId,
@@ -478,7 +478,7 @@ async function computeUsnPriceMultiplier(
   const humanAmountOut = usnSwapInfo.amountOut.div(Big(10).pow(6));
   const usnPriceMultiplier = humanAmountOut.div(humanAmountIn).toNumber();
   if (usnPriceMultiplier < 0.95 || usnPriceMultiplier > 1.05) {
-    console.error("USN stable pool is unbalanced");
+    console.error(`USN stable pool is unbalanced. Price: ${usnPriceMultiplier}`);
     return null;
   }
   return usnPriceMultiplier;
