@@ -11,7 +11,9 @@ const gate = require("./feeds/gate");
 const chainlink = require("./feeds/chainlink");
 const refExchange = require("./feeds/refExchange");
 const { GetMedianPrice, LoadJson, SaveJson } = require("./functions");
-console.log("Welcome to the Oracle Bot");
+const pjson = require('./package.json');
+
+console.log(`NEAR Price Oracle Validator Bot, v.${pjson?.version}`);
 
 const nearConfig = config.getConfig(process.env.NODE_ENV || "development");
 
@@ -324,6 +326,7 @@ const computeCoins = mainnet ? MainnetComputeCoins : TestnetComputeCoins;
 
 const DefaultState = {
   lastFullUpdateTimestamp: 0,
+  lastVersionReportTimestamp: 0,
 };
 
 async function main() {

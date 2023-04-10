@@ -13,7 +13,9 @@ module.exports = {
                         `https://api.huobi.pro/market/detail/merged?symbol=${coins[ticker].huobi}`
                     );
                     res = await res.json();
-                    prices[ticker] = (res.tick.bid[0] + res.tick.ask[0]) / 2;
+                    if(res?.tick?.bid[0] && res?.tick?.ask[0]) {
+                        prices[ticker] = (res.tick.bid[0] + res.tick.ask[0]) / 2;
+                    }
                 })().catch(function (error) {
                     console.error(error);
                 })
