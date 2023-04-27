@@ -310,6 +310,10 @@ const MainnetComputeCoins = {
     "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near",
     3020
   ),
+  "usdt.tether-token.near": {
+    dependencyCoin: "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near",
+    computeCall: async (dependencyPrice) => dependencyPrice,
+  }
 };
 
 const TestnetComputeCoins = {
