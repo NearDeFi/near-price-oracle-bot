@@ -128,13 +128,6 @@ const MainnetCoins = {
     gate: "usdt_usd",
     chainlink: "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D"
   },
-  "usdt.tether-token.near": {
-    decimals: 6,
-    stablecoin: true,
-    coingecko: "tether",
-    gate: "usdt_usd",
-    chainlink: "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D"
-  },
   "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near": {
     decimals: 6,
     stablecoin: true,
@@ -317,6 +310,10 @@ const MainnetComputeCoins = {
     "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near",
     3020
   ),
+  "usdt.tether-token.near": {
+    dependencyCoin: "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near",
+    computeCall: async (dependencyPrice) => dependencyPrice,
+  }
 };
 
 const TestnetComputeCoins = {
