@@ -42,6 +42,8 @@ module.exports = {
     ? parseFloat(process.env.MIN_USN_LIQUIDITY_IN_POOL)
     : 10_000 * 1e18,
 
+  MIN_CLAIM_NEAR_BALANCE: process.env.MIN_CLAIM_NEAR_BALANCE ? parseFloat(process.env.MIN_CLAIM_NEAR_BALANCE) : 10,
+
   getConfig: (env) => {
     switch (env) {
       case "production":
