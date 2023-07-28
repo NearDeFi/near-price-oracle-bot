@@ -53,6 +53,12 @@ module.exports = {
       console.log(`!!! Reporting version of the bot: ${pjson?.version}`);
     }
 
+    const currentBalance = parseFloat(await near.CurrentBalance(config.NEAR_ACCOUNT_ID)) / 1e24;
+    if (currentBalance < config.MIN_CLAIM_NEAR_BALANCE) {
+      console.log(`!!! Current balance ${currentBalance} is less than ${config.MIN_CLAIM_NEAR_BALANCE}. Claiming NEAR`);
+      txParameters.claim_near = true;
+    }
+
     if (prices_to_update.length || !!txParameters.version ) {
       await near.NearCall(
         config.NEAR_ACCOUNT_ID,

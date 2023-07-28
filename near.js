@@ -14,6 +14,15 @@ const CREDENTIALS_DIR =
 const GAS = "50000000000000";
 
 module.exports = {
+  CurrentBalance: async function (accountId) {
+    const nearRpc = new nearApi.providers.JsonRpcProvider(nearConfig.nodeUrl);
+    const account = new nearApi.Account({ provider: nearRpc }, accountId);
+
+    const state = await account.state();
+
+    return state.amount;
+  },
+
   NearView: async function (contract, operation, parameters) {
     const nearRpc = new nearApi.providers.JsonRpcProvider(nearConfig.nodeUrl);
     const account = new nearApi.Account({ provider: nearRpc });
