@@ -14,7 +14,7 @@ module.exports = {
       console.log(
         `Compare ${ticker}: ${old_price.multiplier.toString()} and ${new_price.multiplier.toString()}`
       );
-      if (liveAssets && !liveAssets.includes(ticker)) {
+      if (liveAssets && !liveAssets.has(ticker)) {
         console.log(`!!! ${ticker} is not whitelisted. Skipping`);
         return;
       }
