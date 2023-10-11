@@ -313,6 +313,10 @@ const MainnetComputeCoins = {
   "usdt.tether-token.near": {
     dependencyCoin: "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near",
     computeCall: async (dependencyPrice) => dependencyPrice,
+  },
+  "17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1": {
+    dependencyCoin: "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near",
+    computeCall: async (dependencyPrice) => dependencyPrice,
   }
 };
 
@@ -322,6 +326,10 @@ const TestnetComputeCoins = {
     computeCall: async (dependencyPrice) => dependencyPrice,
   },
   "usdn.testnet": computeUsn("usdn.testnet", "usdt.fakes.testnet", 356),
+  "3e2210e1184b45b64c8a434c0a7e7b23cc04ea7eb7a6c3c32520d03d4afcb8af": {
+    dependencyCoin: "usdc.fakes.testnet",
+    computeCall: async (dependencyPrice) => dependencyPrice,
+  }
 };
 
 const mainnet = nearConfig.networkId === "mainnet";
@@ -394,7 +402,7 @@ async function main() {
     return agg;
   }, {});
 
-  const raw_oracle_price_data = await near.NearView(
+  const [raw_oracle_price_data, rawAssets] = await Promise.all([near.NearView(
     config.CONTRACT_ID,
     "get_oracle_price_data",
     {
@@ -402,7 +410,13 @@ async function main() {
       asset_ids: tickers,
       recency_duration_sec: Math.floor(config.MAX_NO_REPORT_DURATION / 1000),
     }
-  );
+  ), near.NearView(
+    config.CONTRACT_ID,
+    "get_assets",
+    {}
+  )]);
+
+  const liveAssets = new Set(rawAssets.map(asset => asset[0]));
 
   const old_prices = raw_oracle_price_data.prices.reduce(
     (obj, item) =>
@@ -414,7 +428,7 @@ async function main() {
     {}
   );
 
-  await bot.updatePrices(relativeDiffs, old_prices, new_prices, state);
+  await bot.updatePrices(relativeDiffs, old_prices, new_prices, state, liveAssets);
 
   SaveJson(state, config.STATE_FILENAME);
 }

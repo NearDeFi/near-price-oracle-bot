@@ -4,7 +4,7 @@ const { IsDifferentEnough } = require("./functions");
 const pjson = require('./package.json');
 
 module.exports = {
-  updatePrices: async function (relativeDiffs, old_prices, new_prices, state) {
+  updatePrices: async function (relativeDiffs, old_prices, new_prices, state, liveAssets) {
     const current_time = new Date().getTime();
     let prices_to_update = [];
     const all_prices_updates = [];
@@ -14,6 +14,10 @@ module.exports = {
       console.log(
         `Compare ${ticker}: ${old_price.multiplier.toString()} and ${new_price.multiplier.toString()}`
       );
+      if (liveAssets && !liveAssets.has(ticker)) {
+        console.log(`!!! ${ticker} is not whitelisted. Skipping`);
+        return;
+      }
       if (new_price.multiplier > 0) {
         const price_update = {
           asset_id: ticker,
