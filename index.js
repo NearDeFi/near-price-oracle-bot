@@ -12,7 +12,6 @@ const chainlink = require("./feeds/chainlink");
 const refExchange = require("./feeds/refExchange");
 const { GetMedianPrice, LoadJson, SaveJson } = require("./functions");
 const pjson = require('./package.json');
-const {NearView} = require("./near");
 
 console.log(`NEAR Price Oracle Validator Bot, v.${pjson?.version}`);
 
@@ -411,10 +410,11 @@ async function main() {
       asset_ids: tickers,
       recency_duration_sec: Math.floor(config.MAX_NO_REPORT_DURATION / 1000),
     }
-  ), near.NearView(config.CONTRACT_ID,
+  ), near.NearView(
+    config.CONTRACT_ID,
     "get_assets",
-    {
-    })]);
+    {}
+  )]);
 
   const liveAssets = new Set(rawAssets.map(asset => asset[0]));
 
