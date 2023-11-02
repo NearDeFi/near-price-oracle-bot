@@ -29,7 +29,7 @@ module.exports = {
         await Promise.all(
             address_to_process.map((address) =>
                 (async () => {
-                    let res = await fetchWithTimeout("https://cloudflare-eth.com/v1/mainnet", {
+                    let res = await fetchWithTimeout("https://rpc.ankr.com/eth", {
                         method: 'POST',
                         body: JSON.stringify(getData(coins[address].chainlink)),
                         headers: {'Content-Type': 'application/json'}
