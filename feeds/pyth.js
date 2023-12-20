@@ -7,7 +7,7 @@ const MAX_TIME_DIFFERENCE = 120;
 module.exports = {
   getPrices: async function (coins) {
     let address_to_process = Object.keys(coins)
-      .filter((address) => coins[address].pyth)
+      .filter((address) => !!coins[address].pyth)
       .map((address) => coins[address].pyth);
 
     let prices = {};
@@ -33,7 +33,7 @@ module.exports = {
           }
         } else {
           console.error(
-            `Invalid publishTime. It is less than ${MAX_TIME_DIFFERENCE} seconds from now.`
+            `Pyth price is stale. Published more than ${MAX_TIME_DIFFERENCE} seconds ago.`
           );
         }
       });
