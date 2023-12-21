@@ -9,6 +9,7 @@ const cryptocom = require("./feeds/crypto.com");
 const kucoin = require("./feeds/kucoin");
 const gate = require("./feeds/gate");
 const chainlink = require("./feeds/chainlink");
+const pyth = require("./feeds/pyth");
 const refExchange = require("./feeds/refExchange");
 const { GetMedianPrice, LoadJson, SaveJson } = require("./functions");
 const pjson = require('./package.json');
@@ -26,7 +27,8 @@ const TestnetCoins = {
     cryptocom: "NEAR_USDT",
     kucoin: "NEAR-USDT",
     gate: "near_usdt",
-    chainlink: "0xC12A6d1D827e23318266Ef16Ba6F397F2F91dA9b"
+    chainlink: "0xC12A6d1D827e23318266Ef16Ba6F397F2F91dA9b",
+    pyth: "0xc415de8d2eba7db216527dff4b60e8f3a5311c740dadb233e13e12547e226750" // Crypto.NEAR/USD
   },
   aurora: {
     decimals: 18,
@@ -37,6 +39,7 @@ const TestnetCoins = {
     kucoin: "ETH-USDT",
     gate: "eth_usdt",
     chainlink: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+    pyth: "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", // Crypto.ETH/USD
     fractionDigits: 2
   },
   "usdt.fakes.testnet": {
@@ -44,7 +47,8 @@ const TestnetCoins = {
     stablecoin: true,
     coingecko: "tether",
     gate: "usdt_usd",
-    chainlink: "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D"
+    chainlink: "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
+    pyth: "0x2b89b9dc8fdf9f34709a5b106b472f0f39bb6ca9ce04b0fd7f2e971688e2e53b", // Crypto.USDT/USD
   },
   "usdc.fakes.testnet": {
     decimals: 6,
@@ -53,7 +57,8 @@ const TestnetCoins = {
     cryptocom: "USDC_USDT",
     kucoin: "USDC-USDT",
     binance: "USDCUSDT",
-    chainlink: "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6"
+    chainlink: "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
+    pyth: "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a" // Crypto.USDC/USD
   },
   "dai.fakes.testnet": {
     decimals: 18,
@@ -63,7 +68,8 @@ const TestnetCoins = {
     cryptocom: "DAI_USDT",
     gate: "dai_usdt",
     binance: "DAIUSDT",
-    chainlink: "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9"
+    chainlink: "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9",
+    pyth: "0xb0948a5e5313200c632b51bb5ca32f6de0d36e9950a942d19751e833f70dabfd" // Crypto.DAI/USD
   },
   "wbtc.fakes.testnet": {
     decimals: 8,
@@ -74,7 +80,8 @@ const TestnetCoins = {
     kucoin: "BTC-USDT",
     gate: "btc_usdt",
     chainlink: "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c",
-    fractionDigits: 2
+    pyth: "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43", // Crypto.BTC/USD
+    fractionDigits: 2,
   },
   "aurora.fakes.testnet": {
     decimals: 18,
@@ -83,8 +90,9 @@ const TestnetCoins = {
     huobi: "aurorausdt",
     kucoin: "AURORA-USDT",
     gate: "aurora_usdt",
+    pyth: "0x2f7c4f738d498585065a4b87b637069ec99474597da7f0ca349ba8ac3ba9cac5", // Crypto.AURORA/USD
     relativeDiff: 0.01, // 1%
-    fractionDigits: 5
+    fractionDigits: 5,
   },
   "woo.orderly.testnet": {
     decimals: 18,
@@ -94,6 +102,7 @@ const TestnetCoins = {
     cryptocom: "WOO_USDT",
     kucoin: "WOO-USDT",
     gate: "woo_usdt",
+    pyth: "0xb82449fd728133488d2d41131cffe763f9c1693b73c544d9ef6aaa371060dd25", // Crypto.WOO/USD
     relativeDiff: 0.01, // 1%
     fractionDigits: 6
   }
@@ -108,7 +117,8 @@ const MainnetCoins = {
     cryptocom: "NEAR_USDT",
     kucoin: "NEAR-USDT",
     gate: "near_usdt",
-    chainlink: "0xC12A6d1D827e23318266Ef16Ba6F397F2F91dA9b"
+    chainlink: "0xC12A6d1D827e23318266Ef16Ba6F397F2F91dA9b",
+    pyth: "0xc415de8d2eba7db216527dff4b60e8f3a5311c740dadb233e13e12547e226750" // Crypto.NEAR/USD
   },
   aurora: {
     decimals: 18,
@@ -119,13 +129,15 @@ const MainnetCoins = {
     kucoin: "ETH-USDT",
     gate: "eth_usdt",
     chainlink: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+    pyth: "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace", // Crypto.ETH/USD
     fractionDigits: 2
   },
   "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near": {
     decimals: 6,
     stablecoin: true,
     coingecko: "tether",
-    chainlink: "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D"
+    chainlink: "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
+    pyth: "0x2b89b9dc8fdf9f34709a5b106b472f0f39bb6ca9ce04b0fd7f2e971688e2e53b", // Crypto.USDT/USD
   },
   "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near": {
     decimals: 6,
@@ -134,7 +146,8 @@ const MainnetCoins = {
     cryptocom: "USDC_USDT",
     kucoin: "USDC-USDT",
     binance: "USDCUSDT",
-    chainlink: "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6"
+    chainlink: "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
+    pyth: "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a" // Crypto.USDC/USD
   },
   "6b175474e89094c44da98b954eedeac495271d0f.factory.bridge.near": {
     decimals: 18,
@@ -144,7 +157,8 @@ const MainnetCoins = {
     cryptocom: "DAI_USDT",
     gate: "dai_usdt",
     binance: "DAIUSDT",
-    chainlink: "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9"
+    chainlink: "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9",
+    pyth: "0xb0948a5e5313200c632b51bb5ca32f6de0d36e9950a942d19751e833f70dabfd" // Crypto.DAI/USD
   },
   "2260fac5e5542a773aa44fbcfedf7c193bc2c599.factory.bridge.near": {
     decimals: 8,
@@ -155,6 +169,7 @@ const MainnetCoins = {
     kucoin: "BTC-USDT",
     gate: "btc_usdt",
     chainlink: "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c",
+    pyth: "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43", // Crypto.BTC/USD
     fractionDigits: 2
   },
   "aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near": {
@@ -164,6 +179,7 @@ const MainnetCoins = {
     huobi: "aurorausdt",
     kucoin: "AURORA-USDT",
     gate: "aurora_usdt",
+    pyth: "0x2f7c4f738d498585065a4b87b637069ec99474597da7f0ca349ba8ac3ba9cac5", // Crypto.AURORA/USD
     relativeDiff: 0.01, // 1%
     fractionDigits: 5
   },
@@ -175,6 +191,7 @@ const MainnetCoins = {
     cryptocom: "WOO_USDT",
     kucoin: "WOO-USDT",
     gate: "woo_usdt",
+    pyth: "0xb82449fd728133488d2d41131cffe763f9c1693b73c544d9ef6aaa371060dd25", // Crypto.WOO/USD
     relativeDiff: 0.01, // 1%
     fractionDigits: 6
   }
@@ -355,6 +372,7 @@ async function main() {
     kucoin.getPrices(coins),
     gate.getPrices(coins),
     chainlink.getPrices(coins),
+    pyth.getPrices(coins)
   ]);
 
   const new_prices = Object.keys(coins).reduce((object, ticker) => {
