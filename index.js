@@ -348,7 +348,55 @@ const MainnetComputeCoins = {
   "17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1": {
     dependencyCoin: "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near",
     computeCall: async (dependencyPrice) => dependencyPrice,
-  }
+  },
+  "a663b02cf0a4b149d2ad41910cb81e23e1c41c32.factory.bridge.near": {
+    dependencyCoin:
+      "853d955acef822db058eb8505911ed77f175b99e.factory.bridge.near",
+    computeCall: async (dependencyPrice) => {
+      if (!dependencyPrice) {
+        return null;
+      }
+      try {
+        const web3 = new Web3();
+
+        const getData = (address) => {
+          return {
+            method: "eth_call",
+            params: [
+              {
+                from: null,
+                to: address,
+                data: "0x99530b06", // pricePerShare
+              },
+              "latest",
+            ],
+            id: 1,
+            jsonrpc: "2.0",
+          };
+        };
+
+        let res = await fetchWithTimeout("https://rpc.ankr.com/eth", {
+          method: "POST",
+          body: JSON.stringify(
+            getData("0xA663B02CF0a4b149d2aD41910CB81e23e1c41c32")
+          ),
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((resp) => resp.json())
+          .then((resp) => {
+            return web3.utils.toBN(resp?.result ?? 0).toString();
+          });
+
+        return {
+          multiplier: Big(res).div(Big(10).pow(14)).toFixed(0),
+          decimals: dependencyPrice.decimals,
+        };
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
+    },
+  },
 };
 
 const TestnetComputeCoins = {
@@ -360,7 +408,54 @@ const TestnetComputeCoins = {
   "3e2210e1184b45b64c8a434c0a7e7b23cc04ea7eb7a6c3c32520d03d4afcb8af": {
     dependencyCoin: "usdc.fakes.testnet",
     computeCall: async (dependencyPrice) => dependencyPrice,
-  }
+  },
+  "sfrax.testnet": {
+    dependencyCoin: "frax.testnet",
+    computeCall: async (dependencyPrice) => {
+      if (!dependencyPrice) {
+        return null;
+      }
+      try {
+        const web3 = new Web3();
+
+        const getData = (address) => {
+          return {
+            method: "eth_call",
+            params: [
+              {
+                from: null,
+                to: address,
+                data: "0x99530b06", // pricePerShare
+              },
+              "latest",
+            ],
+            id: 1,
+            jsonrpc: "2.0",
+          };
+        };
+
+        let res = await fetchWithTimeout("https://rpc.ankr.com/eth", {
+          method: "POST",
+          body: JSON.stringify(
+            getData("0xA663B02CF0a4b149d2aD41910CB81e23e1c41c32")
+          ),
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((resp) => resp.json())
+          .then((resp) => {
+            return web3.utils.toBN(resp?.result ?? 0).toString();
+          });
+
+        return {
+          multiplier: Big(res).div(Big(10).pow(14)).toFixed(0),
+          decimals: dependencyPrice.decimals,
+        };
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
+    },
+  },
 };
 
 const mainnet = nearConfig.networkId === "mainnet";
