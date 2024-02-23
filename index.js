@@ -105,6 +105,14 @@ const TestnetCoins = {
     pyth: "0xb82449fd728133488d2d41131cffe763f9c1693b73c544d9ef6aaa371060dd25", // Crypto.WOO/USD
     relativeDiff: 0.01, // 1%
     fractionDigits: 6
+  },
+  // Unknown account_id for testnet
+  "frax.testnet": {
+    decimals: 18,
+    stablecoin: true,
+    coingecko: "frax",
+    chainlink: "0xB9E1E3A9feFf48998E45Fa90847ed4D467E8BcfD",
+    pyth: "0xc3d5d8d6d17081b3d0bbca6e2fa3a6704bb9a9561d9f9e1dc52db47629f862ad",
   }
 };
 
@@ -194,6 +202,13 @@ const MainnetCoins = {
     pyth: "0xb82449fd728133488d2d41131cffe763f9c1693b73c544d9ef6aaa371060dd25", // Crypto.WOO/USD
     relativeDiff: 0.01, // 1%
     fractionDigits: 6
+  },
+  "853d955acef822db058eb8505911ed77f175b99e.factory.bridge.near": {
+    decimals: 18,
+    stablecoin: true,
+    coingecko: "frax",
+    chainlink: "0xB9E1E3A9feFf48998E45Fa90847ed4D467E8BcfD",
+    pyth: "0xc3d5d8d6d17081b3d0bbca6e2fa3a6704bb9a9561d9f9e1dc52db47629f862ad",
   }
 };
 
