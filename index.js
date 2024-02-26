@@ -342,11 +342,13 @@ const MainnetComputeCoins = {
     3020
   ),
   "usdt.tether-token.near": {
-    dependencyCoin: "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near",
+    dependencyCoin:
+      "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near",
     computeCall: async (dependencyPrice) => dependencyPrice,
   },
   "17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1": {
-    dependencyCoin: "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near",
+    dependencyCoin:
+      "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near",
     computeCall: async (dependencyPrice) => dependencyPrice,
   },
   "a663b02cf0a4b149d2ad41910cb81e23e1c41c32.factory.bridge.near": {
@@ -375,7 +377,7 @@ const MainnetComputeCoins = {
           };
         };
 
-        let res = await fetchWithTimeout("https://rpc.ankr.com/eth", {
+        return await fetchWithTimeout("https://rpc.ankr.com/eth", {
           method: "POST",
           body: JSON.stringify(
             getData("0xA663B02CF0a4b149d2aD41910CB81e23e1c41c32")
@@ -384,13 +386,27 @@ const MainnetComputeCoins = {
         })
           .then((resp) => resp.json())
           .then((resp) => {
-            return web3.utils.toBN(resp?.result ?? 0).toString();
-          });
+            const pricePerShare = Big(
+              web3.utils.toBN(resp?.result ?? 0).toString()
+            );
 
-        return {
-          multiplier: Big(res).div(Big(10).pow(14)).toFixed(0),
-          decimals: dependencyPrice.decimals,
-        };
+            // TODO: Update 1.15 in about 1 year (Feb, 2025)
+            if (
+              pricePerShare.lt(Big(1.01).mul(Big(10).pow(18))) ||
+              pricePerShare.gt(Big(1.15).mul(Big(10).pow(18)))
+            ) {
+              console.error(
+                "sFrax pricePerShare is out of range:",
+                pricePerShare.toString()
+              );
+              return null;
+            }
+
+            return {
+              multiplier: pricePerShare.div(Big(10).pow(14)).toFixed(0),
+              decimals: dependencyPrice.decimals,
+            };
+          });
       } catch (e) {
         console.log(e);
         return null;
@@ -409,8 +425,8 @@ const TestnetComputeCoins = {
     dependencyCoin: "usdc.fakes.testnet",
     computeCall: async (dependencyPrice) => dependencyPrice,
   },
-  "sfrax.testnet": {
-    dependencyCoin: "frax.testnet",
+  "s.fraxtoken.testnet": {
+    dependencyCoin: "fraxtoken.testnet",
     computeCall: async (dependencyPrice) => {
       if (!dependencyPrice) {
         return null;
@@ -434,7 +450,7 @@ const TestnetComputeCoins = {
           };
         };
 
-        let res = await fetchWithTimeout("https://rpc.ankr.com/eth", {
+        return await fetchWithTimeout("https://rpc.ankr.com/eth", {
           method: "POST",
           body: JSON.stringify(
             getData("0xA663B02CF0a4b149d2aD41910CB81e23e1c41c32")
@@ -443,13 +459,27 @@ const TestnetComputeCoins = {
         })
           .then((resp) => resp.json())
           .then((resp) => {
-            return web3.utils.toBN(resp?.result ?? 0).toString();
-          });
+            const pricePerShare = Big(
+              web3.utils.toBN(resp?.result ?? 0).toString()
+            );
 
-        return {
-          multiplier: Big(res).div(Big(10).pow(14)).toFixed(0),
-          decimals: dependencyPrice.decimals,
-        };
+            // TODO: Update 1.15 in about 1 year (Feb, 2025)
+            if (
+              pricePerShare.lt(Big(1.01).mul(Big(10).pow(18))) ||
+              pricePerShare.gt(Big(1.15).mul(Big(10).pow(18)))
+            ) {
+              console.error(
+                "sFrax pricePerShare is out of range:",
+                pricePerShare.toString()
+              );
+              return null;
+            }
+
+            return {
+              multiplier: pricePerShare.div(Big(10).pow(14)).toFixed(0),
+              decimals: dependencyPrice.decimals,
+            };
+          });
       } catch (e) {
         console.log(e);
         return null;
