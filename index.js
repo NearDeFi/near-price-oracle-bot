@@ -10,6 +10,7 @@ const kucoin = require("./feeds/kucoin");
 const gate = require("./feeds/gate");
 const chainlink = require("./feeds/chainlink");
 const pyth = require("./feeds/pyth");
+const uniswapv3 = require("./feeds/uniswap-v3");
 const refExchange = require("./feeds/refExchange");
 const {
   GetMedianPrice,
@@ -20,6 +21,7 @@ const {
 const pjson = require("./package.json");
 const Web3 = require("web3");
 const Big = require("big.js");
+const { FeeAmount } = require("@uniswap/v3-sdk");
 
 console.log(`NEAR Price Oracle Validator Bot, v.${pjson?.version}`);
 
@@ -119,6 +121,17 @@ const TestnetCoins = {
     coingecko: "frax",
     chainlink: "0xB9E1E3A9feFf48998E45Fa90847ed4D467E8BcfD",
     pyth: "0xc3d5d8d6d17081b3d0bbca6e2fa3a6704bb9a9561d9f9e1dc52db47629f862ad",
+    uniswapv3: {
+      tokenIn: {
+        address: "0x853d955acef822db058eb8505911ed77f175b99e", // Frax
+        decimals: 18,
+      },
+      tokenOut: {
+        address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", // USDC
+        decimals: 6,
+      },
+      fee: FeeAmount.LOW, // Most popular pool
+    },
   },
 };
 
@@ -215,6 +228,17 @@ const MainnetCoins = {
     coingecko: "frax",
     chainlink: "0xB9E1E3A9feFf48998E45Fa90847ed4D467E8BcfD",
     pyth: "0xc3d5d8d6d17081b3d0bbca6e2fa3a6704bb9a9561d9f9e1dc52db47629f862ad",
+    uniswapv3: {
+      tokenIn: {
+        address: "0x853d955acef822db058eb8505911ed77f175b99e", // Frax
+        decimals: 18,
+      },
+      tokenOut: {
+        address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", // USDC
+        decimals: 6,
+      },
+      fee: FeeAmount.LOW, // Most popular pool
+    },
   },
 };
 
@@ -458,6 +482,7 @@ async function main() {
     gate.getPrices(coins),
     chainlink.getPrices(coins),
     pyth.getPrices(coins),
+    uniswapv3.getPrices(coins),
   ]);
 
   const new_prices = Object.keys(coins).reduce((object, ticker) => {
