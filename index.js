@@ -271,36 +271,30 @@ const computeSFrax = async (dependencyPrice) => {
       };
     };
 
-    return await fetchWithTimeout("https://rpc.ankr.com/eth", {
+    let resp = await fetchWithTimeout("https://rpc.ankr.com/eth", {
       method: "POST",
       body: JSON.stringify(
         getData("0xA663B02CF0a4b149d2aD41910CB81e23e1c41c32")
       ),
       headers: { "Content-Type": "application/json" },
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        const pricePerShare = Big(
-          web3.utils.toBN(resp?.result ?? 0).toString()
-        );
+    });
+    resp = await resp.json();
+    const pricePerShare = Big(web3.utils.toBN(resp?.result ?? 0).toString());
+    const multiplier = pricePerShare.div(Big(10).pow(18));
 
-        // TODO: Update 1.15 in about 1 year (Feb, 2025)
-        if (
-          pricePerShare.lt(Big(1.01).mul(Big(10).pow(18))) ||
-          pricePerShare.gt(Big(1.15).mul(Big(10).pow(18)))
-        ) {
-          console.error(
-            "sFrax pricePerShare is out of range:",
-            pricePerShare.toString()
-          );
-          return null;
-        }
+    // TODO: Update 1.15 in about 1 year (Feb, 2025)
+    if (multiplier.lt(1.01) || multiplier.gt(Big(1.15))) {
+      console.error(
+        "sFrax pricePerShare is out of range:",
+        pricePerShare.toString()
+      );
+      return null;
+    }
 
-        return {
-          multiplier: pricePerShare.div(Big(10).pow(14)).toFixed(0),
-          decimals: dependencyPrice.decimals,
-        };
-      });
+    return {
+      multiplier: multiplier.mul(dependencyPrice.multiplier).toFixed(0),
+      decimals: dependencyPrice.decimals,
+    };
   } catch (e) {
     console.log(e);
     return null;
