@@ -55,7 +55,6 @@ const TestnetCoins = {
     decimals: 6,
     stablecoin: true,
     coingecko: "tether",
-    gate: "usdt_usd",
     chainlink: "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
     pyth: "0x2b89b9dc8fdf9f34709a5b106b472f0f39bb6ca9ce04b0fd7f2e971688e2e53b", // Crypto.USDT/USD
   },
