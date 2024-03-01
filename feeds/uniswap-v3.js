@@ -10,8 +10,7 @@ const QUOTER_CONTRACT_ADDRESS = "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6";
 const MAINNET_NETWORK_ID = 1;
 const AMOUNT_IN = 10000;
 
-const MAINNET_RPC =
-  "https://mainnet.infura.io/v3/0ac57a06f2994538829c14745750d721";
+const MAINNET_RPC = "https://rpc.ankr.com/eth";
 
 function fromReadableAmount(amount, decimals) {
   return ethers.utils.parseUnits(amount.toString(), decimals);

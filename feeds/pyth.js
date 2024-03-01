@@ -11,7 +11,7 @@ module.exports = {
       .map((address) => coins[address].pyth);
 
     let prices = {};
-    (async () => {
+    await (async () => {
       const priceData = await connection.getLatestPriceFeeds(
         address_to_process
       );
@@ -33,14 +33,13 @@ module.exports = {
           }
         } else {
           console.error(
-            `Pyth price is stale. Published more than ${MAX_TIME_DIFFERENCE} seconds ago.`
+            `Pyth price fro ${data.id} is stale. Published more than ${MAX_TIME_DIFFERENCE} seconds ago.`
           );
         }
       });
     })().catch(function (error) {
-      console.error(error);
+      console.error("Pyth error", error);
     });
-
     //console.log("pyth prices", prices)
     return prices;
   },
