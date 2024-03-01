@@ -33,7 +33,7 @@ module.exports = {
           }
         } else {
           console.error(
-            `Pyth price fro ${data.id} is stale. Published more than ${MAX_TIME_DIFFERENCE} seconds ago.`
+            `Pyth price for ${data.id} is stale. Published more than ${MAX_TIME_DIFFERENCE} seconds ago.`
           );
         }
       });
