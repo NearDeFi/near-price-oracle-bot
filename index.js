@@ -347,8 +347,8 @@ const MainnetComputeCoins = {
         );
         const stNearMultiplier =
           parseFloat(rawStNearState.st_near_price) / 1e24;
-        // TODO: Update 1.34 in about 1 year (Jul, 2024)
-        if (stNearMultiplier < 1.21 || stNearMultiplier > 1.34) {
+        // TODO: Update 1.58 in about 1 year (Sept, 2026)
+        if (stNearMultiplier < 1.33 || stNearMultiplier > 1.58) {
           console.error("stNearMultiplier is out of range:", stNearMultiplier);
           return null;
         }
@@ -375,8 +375,8 @@ const MainnetComputeCoins = {
           {}
         );
         const liNearMultiplier = parseFloat(rawLiNearPrice) / 1e24;
-        // TODO: Update 1.25 in about 1 year (July, 2024)
-        if (liNearMultiplier < 1.13 || liNearMultiplier > 1.25) {
+        // TODO: Update 1.5 in about 2 year (Sept, 2026)
+        if (liNearMultiplier < 1.25 || liNearMultiplier > 1.5) {
           console.error("liNearMultiplier is out of range:", liNearMultiplier);
           return null;
         }
