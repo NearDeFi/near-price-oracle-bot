@@ -1,6 +1,16 @@
-diff -Naur near-price-oracle-bot/near.js near-price-oracle-bot2/near.js
---- near-price-oracle-bot/near.js	2022-03-30 17:27:06.685957897 +0200
-+++ near-price-oracle-bot2/near.js	2022-03-30 17:30:08.027960860 +0200
+--- b1/config.js
++++ b2/config.js
+@@ -40,7 +40,7 @@
+       case "mainnet":
+         return {
+           networkId: "mainnet",
+-          nodeUrl: "https://rpc.mainnet.near.org",
++          nodeUrl: "http://10.128.17.1:3031",
+           contractName: CONTRACT_NAME || "null_address.near",
+           walletUrl: "https://wallet.near.org",
+           helperUrl: "https://helper.mainnet.near.org",
+--- b1/near.js
++++ b2/near.js
 @@ -63,8 +63,9 @@
  };
  
@@ -13,10 +23,9 @@ diff -Naur near-price-oracle-bot/near.js near-price-oracle-bot2/near.js
    try {
      const credentials = JSON.parse(fs.readFileSync(keyPath));
      return credentials.private_key;
-diff -Naur near-price-oracle-bot/run.sh near-price-oracle-bot2/run.sh
---- near-price-oracle-bot/run.sh	2022-03-30 17:27:06.685957897 +0200
-+++ near-price-oracle-bot2/run.sh	2022-03-30 17:45:53.019561057 +0200
-@@ -1,19 +1,17 @@
+--- b1/run.sh
++++ b2/run.sh
+@@ -1,20 +1,18 @@
 -#!/bin/bash
 +#!/bin/sh
  set -e
@@ -26,6 +35,7 @@ diff -Naur near-price-oracle-bot/run.sh near-price-oracle-bot2/run.sh
 -# export NEAR_ACCOUNT_ID=abc.near
 +export NEAR_ACCOUNT_ID=$(cat /home/node/key.json | jq .account_id | tr -d \")
  export CONTRACT_ID=priceoracle.near
+ export PRINT_DEBUG=true
  
 -cd $(dirname "$0")
 -mkdir -p logs
