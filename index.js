@@ -294,7 +294,7 @@ const computeSFrax = async (dependencyPrice) => {
       };
     };
 
-    let resp = await fetchWithTimeout("https://rpc.ankr.com/eth", {
+    let resp = await fetchWithTimeout(config.ETH_RPC_URL, {
       method: "POST",
       body: JSON.stringify(
         getData("0xA663B02CF0a4b149d2aD41910CB81e23e1c41c32")

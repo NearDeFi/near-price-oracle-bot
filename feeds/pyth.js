@@ -38,7 +38,7 @@ module.exports = {
         }
       });
     })().catch(function (error) {
-      console.error("Pyth error", error);
+      console.error("Pyth API error:", error.response?.data || error.message);
     });
     //console.log("pyth prices", prices)
     return prices;

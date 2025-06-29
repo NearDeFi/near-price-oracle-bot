@@ -1,5 +1,6 @@
 const Web3 = require("web3");
 
+const config = require("../config");
 const {fetchWithTimeout} = require("../functions");
 
 const getData = (address) => {
@@ -29,7 +30,7 @@ module.exports = {
         await Promise.all(
             address_to_process.map((address) =>
                 (async () => {
-                    let res = await fetchWithTimeout("https://rpc.ankr.com/eth", {
+                    let res = await fetchWithTimeout(config.ETH_RPC_URL, {
                         method: 'POST',
                         body: JSON.stringify(getData(coins[address].chainlink)),
                         headers: {'Content-Type': 'application/json'}
