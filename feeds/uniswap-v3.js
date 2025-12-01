@@ -1,3 +1,4 @@
+const config = require("../config");
 const { Token } = require("@uniswap/sdk-core");
 const { ethers } = require("ethers");
 const { computePoolAddress, FeeAmount } = require("@uniswap/v3-sdk");
@@ -10,8 +11,6 @@ const QUOTER_CONTRACT_ADDRESS = "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6";
 const MAINNET_NETWORK_ID = 1;
 const AMOUNT_IN = 10000;
 
-const MAINNET_RPC = "https://rpc.ankr.com/eth";
-
 function fromReadableAmount(amount, decimals) {
   return ethers.utils.parseUnits(amount.toString(), decimals);
 }
@@ -21,7 +20,7 @@ function toReadableAmount(rawAmount, decimals) {
 }
 
 function getProvider() {
-  return new ethers.providers.JsonRpcProvider(MAINNET_RPC);
+  return new ethers.providers.JsonRpcProvider(config.ETH_RPC_URL);
 }
 
 async function getPoolConstantsV3(tokenIn, tokenOut, poolFee) {

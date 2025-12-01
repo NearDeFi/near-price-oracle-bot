@@ -2,6 +2,7 @@ const CONTRACT_NAME = process.env.CONTRACT_NAME || "oracle.testnet";
 
 module.exports = {
   CONTRACT_ID: CONTRACT_NAME,
+  ETH_RPC_URL: process.env.ETH_RPC_URL || "https://eth.drpc.org",
   NEAR_ACCOUNT_ID: process.env.NEAR_ACCOUNT_ID || "account.testnet",
   TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
   TELEGRAM_TOKEN: process.env.TELEGRAM_TOKEN,
